@@ -8,5 +8,7 @@ public class AppStart {
     public static void main(String[] args) {
         // SpringApplication.run(현재클래스명.class);
         SpringApplication.run(AppStart.class);
+
+
     }
 }
