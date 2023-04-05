@@ -2,6 +2,8 @@ package ezenweb.example.day03;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -13,7 +15,22 @@ import java.util.ArrayList;
 
     public class NoteController {
     @Autowired // 생성자 자동 주입 [ * 단 스프링컨테이너에 등록이 되어 있는 경우! ]
-    NoteService noteService;
+    NoteService noteService; // 서비스 객체
+
+    // ------------------------- HTML 반환 ---------------------------- //
+    @GetMapping("")
+    public Resource index(){
+        return new ClassPathResource("templates/note.html");
+    }
+
+
+
+
+
+
+
+
+    // ------------------------- RESTful API ------------------------- //
 
     // 1. 쓰기
     @PostMapping("/write")

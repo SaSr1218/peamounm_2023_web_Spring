@@ -5,8 +5,10 @@ import org.aspectj.weaver.ast.Not;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 // 비즈니스 로직(실질적인 업무) 담당
 @Service    // MVC 서비스
@@ -17,10 +19,11 @@ public class NoteService {
     NoteEntityRepository noteEntityRepository;
 
     // 1. 쓰기
-    public boolean write(NoteDto noteDto){
-        log.info("service write in : " + noteDto);
+    @Transactional
+    public boolean write(NoteDto noteDto){ log.info("service write in : " + noteDto);
+
         // 1. DTO -> 엔티티로 변환후 SAVE
-        NoteEntity entity = noteEntityRepository.save(noteDto.toEntity() );
+        NoteEntity entity = noteEntityRepository.save( noteDto.toEntity() );
         if ( entity.getNno() >= 0){ // 레코드가 생성되었으면 [ 등록 성공 ]
             return true;
         }
@@ -28,8 +31,9 @@ public class NoteService {
     }
 
     // 2. 출력
-    public ArrayList<NoteDto> get() {
-        log.info("service get in");
+    @Transactional
+    public ArrayList<NoteDto> get() { log.info("service get in");
+
         // 1. 모든 엔티티 호출
         List<NoteEntity> entityList =  noteEntityRepository.findAll();
         // 2. 모든 엔티티를 형변환 ( 엔티티 -> DTO )
@@ -43,15 +47,33 @@ public class NoteService {
     }
 
     // 3. 삭제
-    public boolean delete( int nno ){
-        log.info("service delete in");
-        return true;
+    @Transactional
+    public boolean delete( int nno ){ log.info("service delete in");
+        // 1. 삭제할 식별번호[pk]를 이용한 엔티티 검색 [ 검색성공 : 엔티티 / 검색실패 : null ]
+        Optional<NoteEntity> optionalNoteEntity = noteEntityRepository.findById(nno);
+        // 2. 포장클래스 <엔티티>
+        if ( optionalNoteEntity.isPresent() ) { // 포장 클래스내 엔티티가 들어있으면
+            NoteEntity noteEntity = optionalNoteEntity.get(); // 엔티티 꺼내기
+            noteEntityRepository.delete( noteEntity ); // 찾은 엔티티를 리포지토리 통해 삭제하기
+            return true;
+        }
+        return false;
     }
 
     // 4. 수정
-    public boolean update(NoteDto noteDto){
-        log.info("service update in");
-        return true;
+    // @Transactional : 해당 메소드내 엔티티객체 필드의 변화가 있을경우 실시간 commit 처리
+    @Transactional // import javax.transaction.Transactional
+    public boolean update(NoteDto noteDto){ log.info("service update in");
+        // 1. 해당 pk 번호를 이용한 엔티티 검색
+        Optional<NoteEntity> optionalNoteEntity =  noteEntityRepository.findById( noteDto.getNno() );
+        // 2. 포장클래스<엔티티>
+        if (optionalNoteEntity.isPresent() ) { // 포장 클래스내 엔티티가 들어있으면
+            NoteEntity noteEntity = optionalNoteEntity.get(); // 엔티티 꺼내기
+            // 3. 객체내 필드 변경 --> 엔티티객체 필드변경 --> 해당 레코드의 필드 값 변경
+            noteEntity.setNcontents( noteDto.getNcontents() );
+            return true;
+        }
+        return false;
     }
 
 
