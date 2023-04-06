@@ -13,9 +13,9 @@ import java.time.LocalDateTime;
 public class Basetime {
 
     @CreatedDate
-    private LocalDateTime cdate;    // 레코드 생성 날짜
+    public LocalDateTime cdate;    // 레코드 생성 날짜
 
     @LastModifiedDate
-    private LocalDateTime udate;    // 레코드 수정 날짜
+    public LocalDateTime udate;    // 레코드 수정 날짜
 
 }

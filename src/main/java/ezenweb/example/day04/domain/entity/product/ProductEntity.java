@@ -2,16 +2,13 @@ package ezenweb.example.day04.domain.entity.product;
 
 import ezenweb.example.day04.domain.dto.ProductDto;
 import ezenweb.example.day04.domain.entity.Basetime;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "item")
-@Data
+@Setter @Getter @ToString
 @AllArgsConstructor @NoArgsConstructor
 @Builder
 public class ProductEntity extends Basetime {
@@ -26,6 +23,7 @@ public class ProductEntity extends Basetime {
     public ProductDto toDto(){
         return ProductDto.builder()
                 .pno(this.pno).pname(this.pname).pcontent(this.pcontent)
+                .cdate(this.cdate).udate(this.udate)
                 .build();
     }
 

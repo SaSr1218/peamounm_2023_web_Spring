@@ -24,14 +24,17 @@ function onget(){
     url : "/item/get" ,
     method : "get" ,
     success : (r) => {
-
+            console.log(r);
             let html = `<tr>
-                            <th>물품이름</th> <th> 물품소개 </th> <th> 비고 </th>
+                            <th>물품이름</th> <th> 물품소개 </th> <th> 등록날짜 </th> <th> 수정날짜 </th> <th> 비고 </th>
                         </tr>`
         r.forEach( (p) => {
+            console.log(p);
                 html += `<tr>
-                            <td>${p.pname}</td>
+                           <td>${p.pname}</td>
                            <td>${p.pcontent}</td>
+                           <td>${p.cdate}</td>
+                           <td>${p.udate}</td>
                            <td>
                                 <button onclick="onupdate(${p.pno})" type="button"> 수정 </button>
                                 <button onclick="ondelete(${p.pno})" type="button"> 삭제 </button>
