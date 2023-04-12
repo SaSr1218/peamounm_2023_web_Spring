@@ -4,12 +4,22 @@ import ezenweb.web.domain.member.MemberDto;
 import ezenweb.web.service.MemberService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @Slf4j
 @RequestMapping("/member")
 public class MemberController {
+
+    @GetMapping("/signup")
+    public Resource getSignup(){ return new ClassPathResource("templates/member/signup.html");}
+    @GetMapping("/login")
+    public Resource getLogin(){ return new ClassPathResource("templates/member/login.html");}
+
+
+
     // 1. @Autowird 생략 할 경우 ( JSP에서 싱글톤 만드는 방식처럼..)
     // MemberService service = new MemberService();
 
@@ -46,6 +56,13 @@ public class MemberController {
     public boolean delete( @RequestParam int mno ){
         log.info("member info write : " + mno );
         boolean result = memberService.delete( mno );
+        return result;
+    }
+
+    // -------------------- 스프링 시큐리티 사용 전 --------------- //
+    @PostMapping("/login")
+    public boolean login( @RequestBody MemberDto memberDto ){
+        boolean result = memberService.login( memberDto );
         return result;
     }
 
