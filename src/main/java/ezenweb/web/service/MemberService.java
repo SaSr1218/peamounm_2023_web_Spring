@@ -31,12 +31,12 @@ public class MemberService {
     // *2 로그인 [ 시큐리티 사용 하기 전 ]
     @Transactional
     public boolean login( MemberDto memberDto ){
-        // 1. 이메일로 엔티티 찾기
+        /*        // 1. 이메일로 엔티티 찾기
         MemberEntity entity = memberEntityRepository.findByMemail( memberDto.getMemail() );
-            log.info("entity : " + entity );
+            log.info("entity : " + entity );*/
 
         // 2. 패스워드 검증
- /*       if ( entity.getMpassword().equals( memberDto.getMpassword() )) {
+         /*       if ( entity.getMpassword().equals( memberDto.getMpassword() )) {
             // (1) ==       스택 메모리 내 데이터 비교(지역변수)
             // (2) .equals  힙 메모리 내 데이터 비교
             // (3) .matches 문자열 주어진 패턴 포함 동일여부 체크
@@ -47,26 +47,38 @@ public class MemberService {
         }*/
 
         // 2. 입력받은 이메일과 패스워드가 동일한지 확인
-        Optional<MemberEntity> result = memberEntityRepository.findByMemailAndMpassword(memberDto.getMemail(), memberDto.getMpassword() );
+        /* Optional<MemberEntity> result = memberEntityRepository.findByMemailAndMpassword(memberDto.getMemail(), memberDto.getMpassword() );
            log.info("result : " + result );
         if ( result.isPresent() ){
             request.getSession().setAttribute("login", result.get().getMno() );
             return true;
-        }
+        }*/
+
+        // 3. 이메일과 패스워드 동일인지 확인
+        boolean result = memberEntityRepository.existsByMemailAndMpassword(memberDto.getMemail(), memberDto.getMpassword());
+            log.info("result : " + result);
+        if ( result == true ){ request.getSession().setAttribute("login" , memberDto.getMemail()); return true;}
+        
         return false;
     }
 
 
-    // 2. 회원정보
+    // 2. [ 세션에 존재하는 ] 회원정보
     @Transactional
-    public MemberDto info(int mno) {
+    public MemberDto info() {
 
-        Optional<MemberEntity> entityOptional = memberEntityRepository.findById(mno);
-        if (entityOptional.isPresent()) {
-            MemberEntity entity = entityOptional.get();
+        String memail = (String)request.getSession().getAttribute("login");
+        if ( memail != null ){
+            MemberEntity entity = memberEntityRepository.findByMemail( memail );
             return entity.toDto();
         }
         return null;
+    }
+
+    // 2. [ 세션에 존재하는 정보 제거 ] 로그아웃
+    @Transactional
+    public boolean logout(){
+        request.getSession().setAttribute("login", null); return true;
     }
 
     // 3. 회원수정

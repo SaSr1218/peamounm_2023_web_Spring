@@ -35,11 +35,12 @@ public class MemberController {
         return result;
     }
 
+    // 2. 회원정보[세션] 로그아웃
+    @GetMapping("/logout") public boolean logout() { return memberService.logout(); }
     // 2. [R]회원정보 호출
     @GetMapping("/info")
-    public MemberDto info( @RequestParam int mno ){
-        log.info("member info write : " + mno );
-        MemberDto result = memberService.info( mno );
+    public MemberDto info(){
+        MemberDto result = memberService.info();
         return result;
     }
 
