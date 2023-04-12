@@ -20,6 +20,7 @@ function onSignup(){
 }
 
 // 2. 로그인하기
+/* 시큐리티 사용하므로 아래 코드 사용 X -> 폼 전송으로 로그인 요청
 function onLogin(){
     let info = {
         memail : document.querySelector(".memail").value,
@@ -36,7 +37,8 @@ function onLogin(){
             if ( r== true ){ alert('로그인성공')}
         }
     })
-}
+}*/
+
 getMember();
 // 3. 회원정보 호출
 function getMember(){

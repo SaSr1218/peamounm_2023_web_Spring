@@ -35,8 +35,7 @@ public class MemberController {
         return result;
     }
 
-    // 2. 회원정보[세션] 로그아웃
-    @GetMapping("/logout") public boolean logout() { return memberService.logout(); }
+
     // 2. [R]회원정보 호출
     @GetMapping("/info")
     public MemberDto info(){
@@ -60,11 +59,19 @@ public class MemberController {
         return result;
     }
 
-    // -------------------- 스프링 시큐리티 사용 전 --------------- //
-    @PostMapping("/login")
-    public boolean login( @RequestBody MemberDto memberDto ){
-        boolean result = memberService.login( memberDto );
-        return result;
-    }
+    // ----------- 스프링 시큐리티 적용될 경우 아래코드 사용 X  ----------- //
+
+    /*
+        // 1. 로그인
+        @PostMapping("/login")
+        public boolean login( @RequestBody MemberDto memberDto ){
+            boolean result = memberService.login( memberDto );
+            return result;
+        }
+
+        // 2. 회원정보[세션] 로그아웃
+        @GetMapping("/logout")
+        public boolean logout() { return memberService.logout(); }
+    */
 
 }
