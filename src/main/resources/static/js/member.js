@@ -62,3 +62,28 @@ function getLogout(){
         }
     })
 }
+
+// 5. 아이디찾기
+/*function findId(){
+    $.ajax({
+        url : "/member/findId",
+        method : "get" ,
+        success : (r) => {
+            console.log(r);
+
+        }
+    })
+}*/
+
+// 6. 비밀번호찾기
+/*
+function findPassword(){
+    $.ajax({
+        url : "/member/findPassword",
+        method : "get" ,
+        success : (r) => {
+            console.log(r);
+
+        }
+    })
+}*/
