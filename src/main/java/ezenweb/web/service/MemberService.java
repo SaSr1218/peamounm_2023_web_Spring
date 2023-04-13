@@ -86,9 +86,6 @@ public class MemberService implements UserDetailsService {
 
     }*/
 
-
-
-
     // 3. 회원수정
     @Transactional
     public boolean update(MemberDto memberDto) {
@@ -116,7 +113,6 @@ public class MemberService implements UserDetailsService {
         return false;
     }
 
-
     // 2. [ 세션에 존재하는 정보 제거 ] 로그아웃
     /*
     @Transactional
@@ -137,8 +133,10 @@ public class MemberService implements UserDetailsService {
             // Dto 권한(여러개) 넣어주기
         // 1. 권한목록 만들기
         Set<GrantedAuthority> 권한목록 = new HashSet<>();
-        // 2. 권한객체 만들기 [ DB에 존재하는 권한명으로 ]
-        SimpleGrantedAuthority 권한명 =  new SimpleGrantedAuthority(entity.getMrole() );
+        // 2. 권한객체 만들기 [ DB에 존재하는 권한명( ROLE_@@@으로 ]
+            // 권한 없을 경우 : ROLE_ANONYMOUS
+            // 권한 있을 경우 : ROLE_admin , ROLE_user
+        SimpleGrantedAuthority 권한명 =  new SimpleGrantedAuthority("ROLE_"+entity.getMrole() );
         // 3. 만든 권한객체를 권한목록[컬렉션]에 추가
         권한목록.add( 권한명 );
         // 4. UserDetails 에 권한목록 대입
