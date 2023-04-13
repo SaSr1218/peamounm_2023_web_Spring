@@ -44,6 +44,7 @@ public class MemberService implements UserDetailsService {
         MemberEntity entity = memberEntityRepository.save(memberDto.toEntity());
         if (entity.getMno() > 0) { return true;}
         return false;
+
     }
 
  /*
