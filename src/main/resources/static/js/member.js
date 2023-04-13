@@ -47,11 +47,13 @@ function getMember(){
         method : "get" ,
         success : (r) => {
             document.querySelector('.infobox').innerHTML = `${r.mname}님`
-            document.querySelector('.infobox').innerHTML += `<button onclick="getLogout()" type="button">로그아웃</button>`
+            document.querySelector('.infobox').innerHTML +=
+            `<a href="/member/logout"> <button type="button">로그아웃</button></a>`
         }
     })
 }
 
+/*
 // 4. 로그아웃
 function getLogout(){
 
@@ -64,7 +66,7 @@ function getLogout(){
         }
     })
 }
-
+*/
 // 5. 아이디찾기
 /*function findId(){
     $.ajax({

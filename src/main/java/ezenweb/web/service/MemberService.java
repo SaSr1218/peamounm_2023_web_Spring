@@ -12,6 +12,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
+import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,9 +26,61 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
+// UserDetailsService : 일반유저 서비스 구현 --> loadUserByUsername 구현
+// OAuth2UserService  : oauth2 유저 서비스 구현
+
 @Service
 @Slf4j
-public class MemberService implements UserDetailsService {
+public class MemberService implements UserDetailsService , OAuth2UserService<OAuth2UserRequest , OAuth2User> {
+    @Override
+    public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
+
+        // 1. 인증[로그인]결과 토큰 확인
+        OAuth2UserService oAuth2UserService = new DefaultOAuth2UserService();
+            log.info("서비스 정보 : " + oAuth2UserService.loadUser(userRequest) );
+
+        // 2. 전달받은 정보 객체
+        OAuth2User oAuth2User = oAuth2UserService.loadUser(userRequest);
+             log.info("회원정보 : " + oAuth2User.getAuthorities() );
+
+        // 3. 클라이언트id 요청 [ 구글 vs 네이버  vs 카카오 ]
+        String registrationId = userRequest.getClientRegistration().getRegistrationId();
+            log.info("클라이언트 id : " + registrationId);
+
+
+        // !!!!!!!!!!!!! : oAuth2User.getAttributes() map< String , Object > 구조
+            // [{sub=115552644313400062559, name=최성아, given_name=성아, family_name=최, picture=https://lh3.googleusercontent.com/a/AGNmyxbg6E8kYgMgAVFPjxAuWouYsNYzuBZfz-gO4jz9=s96-c, email=peamounm@gmail.com, email_verified=true, locale=ko}]
+
+        // 4.
+            // 구글 이메일 호출
+            String email = (String)oAuth2User.getAttributes().get("email");
+                log.info("google email : " + email);
+            // 구글의 이름 호출
+            String name = (String)oAuth2User.getAttributes().get("name");
+                log.info("google name : " + name);
+
+        // 인가 객체 [ OAuth2User -> MemberDto 통합Dto( 일반 + oauth2 )
+        MemberDto memberDto = new MemberDto();
+        memberDto.set소셜회원정보(oAuth2User.getAttributes() );
+        memberDto.setMemail(email);
+        memberDto.setMname(name);
+            Set<GrantedAuthority> 권한목록 = new HashSet<>();
+            SimpleGrantedAuthority 권한 = new SimpleGrantedAuthority("ROLE_oauthuser");
+            권한목록.add(권한);
+        memberDto.set권한목록(권한목록);
+
+        // 1. DB 저장하기 전에
+        MemberEntity entity =  memberEntityRepository.findByMemail( email );
+        if ( entity == null ) { // 첫 방문
+            // DB 처리 [ 첫 방문시에만 db 등록 , 두번째 방문부터는 db 수정 ]
+            memberDto.setMrole("oauthuser"); // DB에 저장할 권한명
+            memberEntityRepository.save( memberDto.toEntity() );
+        }else{ // 두번째 방문 이상 수정 처리
+            entity.setMname( name );
+        }
+
+        return memberDto;
+    }
 
     @Autowired
     private MemberEntityRepository memberEntityRepository;
@@ -176,6 +233,7 @@ public class MemberService implements UserDetailsService {
     */
 
     }
+
 
 
 }
