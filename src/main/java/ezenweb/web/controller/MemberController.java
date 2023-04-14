@@ -85,6 +85,13 @@ public class MemberController {
         return result;
     }
 
+    // 7. 아이디 중복 검사
+    @GetMapping("/find")
+    public boolean findId(@RequestParam String memail){
+        log.info("memail 값 : " + memail);
+        boolean result = memberService.checkId(memail);
+        return result;
+    }
 
 
     // ----------- 스프링 시큐리티 적용될 경우 아래코드 사용 X  ----------- //

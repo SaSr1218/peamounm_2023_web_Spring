@@ -169,6 +169,26 @@ public class MemberService implements UserDetailsService , OAuth2UserService<OAu
         return false;
     }
 
+
+
+    // 4. 회원탈퇴
+    @Transactional
+    public boolean delete(int mno) {
+        Optional<MemberEntity> entityOptional = memberEntityRepository.findById(mno);
+        if (entityOptional.isPresent()) {
+            MemberEntity entity = entityOptional.get();
+            memberEntityRepository.delete( entity );
+            return true;
+        }
+        return false;
+    }
+
+    // 2. [ 세션에 존재하는 정보 제거 ] 로그아웃
+    /*
+    @Transactional
+    public boolean logout(){
+        request.getSession().setAttribute("login", null); return true;
+    }*/
     // 5. 아이디찾기
     @Transactional
     public String findId(MemberDto memberDto){
@@ -207,24 +227,12 @@ public class MemberService implements UserDetailsService , OAuth2UserService<OAu
         return newPwd;
     }
 
-    // 4. 회원탈퇴
-    @Transactional
-    public boolean delete(int mno) {
-        Optional<MemberEntity> entityOptional = memberEntityRepository.findById(mno);
-        if (entityOptional.isPresent()) {
-            MemberEntity entity = entityOptional.get();
-            memberEntityRepository.delete( entity );
-            return true;
-        }
-        return false;
+    // 7. 아이디중복검사
+    public boolean checkId(String memail){
+        log.info("memail : " + memail);
+        boolean result = memberEntityRepository.existsByMemail(memail);
+        return !result;
     }
-
-    // 2. [ 세션에 존재하는 정보 제거 ] 로그아웃
-    /*
-    @Transactional
-    public boolean logout(){
-        request.getSession().setAttribute("login", null); return true;
-    }*/
 
     // 1. [ 스프링 시큐리티 적용했을때 사용되는 로그인 메소드 ]
     @Override

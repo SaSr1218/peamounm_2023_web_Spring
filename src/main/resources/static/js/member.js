@@ -1,6 +1,26 @@
+getMember();
+// 0. 아이디 중복 체크
+function checkId(){
+    $.ajax({
+        url : "/member/find",
+        method : "get",
+        data : {"memail" : document.querySelector(".memail").value},
+        success : (r) =>{
+            console.log(r);
+            if(r == false){
+                document.querySelector(".confirmId").innerHTML = `중복된 아이디입니다.`;
+            }else{
+                document.querySelector(".confirmId").innerHTML = `O`;
+            }
+        }
+    })
+}
+
 // 1. 회원가입
 function onSignup(){
-    console.log("회원가입버튼");
+
+    let confirmId = document.querySelector(".confirmId").innerHTML;
+
     let info = {
         memail : document.querySelector(".memail").value,
         mpassword : document.querySelector(".mpassword").value,
@@ -8,16 +28,20 @@ function onSignup(){
         mphone : document.querySelector(".mphone").value
     }
 
-    $.ajax({
-        url : "/member/info",
-        method : "post" ,
-        data : JSON.stringify(info) ,
-        contentType : "application/json" ,
-        success : (r) => {
-            console.log(r);
-            if ( r== true ){ alert('가입성공')}
-        }
-    })
+    if ( confirmId == 'O'){
+        $.ajax({
+            url : "/member/info",
+            method : "post" ,
+            data : JSON.stringify(info) ,
+            contentType : "application/json" ,
+            success : (r) => {
+                console.log(r);
+                if ( r == true ) { alert('가입 성공')}
+            }
+        })
+    } else {
+        alert('아이디가 중복됩니다.')
+    }
 }
 
 // 2. 로그인하기
@@ -40,7 +64,6 @@ function onLogin(){
     })
 }*/
 
-getMember();
 // 3. 회원정보 호출
 function getMember(){
     $.ajax({
