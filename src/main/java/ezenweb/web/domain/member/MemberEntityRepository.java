@@ -10,7 +10,7 @@ public interface MemberEntityRepository extends JpaRepository< MemberEntity , In
     // 1. 해당 이메일로 엔티티 찾기
         // 인수로 들어온 memail과 동일한 엔티티[레코드] 찾아서 반환
         // sql :  select * from member where memail = ?;
-    MemberEntity findByMemail(String memail);
+    Optional<MemberEntity> findByMemail(String memail);
 
     // 2. 해당 이메일과 비밀번호가 일치한 엔티티 여부 확인
         // 인수로 들어온 이메일과 패스워드가 모두 일치한 엔티티[레코드] 찾아서 존재 여부 반환
@@ -22,7 +22,7 @@ public interface MemberEntityRepository extends JpaRepository< MemberEntity , In
     // 4. [ 로그인 활용]  만약에 동일한 이메일과 비밀번호가 존재하면 true, 아니면 false
     boolean existsByMemailAndMpassword( String memail , String mpassword );
 
-    // 아이디 찾기 [ 이름, 전화번호 ] ( mname , mphone )
+    // 5. 아이디 찾기 [ 이름, 전화번호 ] ( mname , mphone )
     Optional<MemberEntity> findByMnameAndMphone ( String mname , String mphone);
 
 

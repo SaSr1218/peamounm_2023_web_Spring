@@ -1,5 +1,6 @@
 // 1. 회원가입
 function onSignup(){
+    console.log("회원가입버튼");
     let info = {
         memail : document.querySelector(".memail").value,
         mpassword : document.querySelector(".mpassword").value,
@@ -67,27 +68,51 @@ function getLogout(){
     })
 }
 */
-// 5. 아이디찾기
-/*function findId(){
+
+// 3. 아이디찾기
+function onfindId(){
+    let info = {
+        mname : document.querySelector(".mname").value,
+        mphone : document.querySelector(".mphone").value
+    }
     $.ajax({
-        url : "/member/findId",
-        method : "get" ,
+        url : "/member/find",
+        method : "post" ,
+        data : JSON.stringify(info),
+        contentType : "application/json",
         success : (r) => {
             console.log(r);
+            document.querySelector('.getfindidbox').innerHTML = `찾은 아이디 : ${r.memail}`;
 
         }
     })
+}
+
+/*function checkPwd(){
+    document.querySelector(".etcDiv").innerHTML = `  비밀번호 입력 : <input type="text" name = "mpassword" class = "mpassword"/><button type = "button" onclick="onDelete()">계정 삭제</button><br/>`;
 }*/
 
-// 6. 비밀번호찾기
-/*
-function findPassword(){
+// 4. 비밀번호찾기
+function onfindPassword(){
+    let info = {
+        memail : document.querySelector(".memail").value,
+        mphone : document.querySelector(".mphone").value
+    }
     $.ajax({
-        url : "/member/findPassword",
-        method : "get" ,
+        url : "/member/find",
+        method : "put" ,
+        data : JSON.stringify(info),
+        contentType : "application/json",
         success : (r) => {
-            console.log(r);
+           console.log(r);
+           if( r != null) {
+            document.querySelector('.newPwd').innerHTML = `임시 회원번호 : ${r}`
+           }else { alert("해당 정보가 없습니다.")}
 
         }
     })
-}*/
+}
+
+// 5. 회원수정
+
+// 6. 회원삭제

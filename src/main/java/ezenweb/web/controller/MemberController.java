@@ -17,7 +17,10 @@ public class MemberController {
     public Resource getSignup(){ return new ClassPathResource("templates/member/signup.html");}
     @GetMapping("/login")
     public Resource getLogin(){ return new ClassPathResource("templates/member/login.html");}
-
+    @GetMapping("/findid")
+    public Resource findId(){ return new ClassPathResource("templates/member/findid.html");}
+    @GetMapping("/findpassword")
+    public Resource findPassword(){ return new ClassPathResource("templates/member/findpassword.html");}
 
 
     // 1. @Autowird 생략 할 경우 ( JSP에서 싱글톤 만드는 방식처럼..)
@@ -34,7 +37,6 @@ public class MemberController {
         boolean result = memberService.write(memberDto);
         return result;
     }
-
 
     // 2. [R]회원정보 호출
     @GetMapping("/info")
@@ -58,6 +60,21 @@ public class MemberController {
         boolean result = memberService.delete( mno );
         return result;
     }
+    // 5. 아이디 찾기
+    @PostMapping("/find")
+    public String findId( MemberDto memberDto ){
+        String result = memberService.findId( memberDto );
+        return result;
+    }
+
+    // 6. 비밀번호 찾기
+    @PutMapping("/find")
+    public String findPassword( MemberDto memberDto ){
+        String result = memberService.findPassword( memberDto );
+        return result;
+    }
+
+
 
     // ----------- 스프링 시큐리티 적용될 경우 아래코드 사용 X  ----------- //
 
