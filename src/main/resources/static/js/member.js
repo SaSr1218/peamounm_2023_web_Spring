@@ -82,7 +82,7 @@ function onfindId(){
         contentType : "application/json",
         success : (r) => {
             console.log(r);
-            document.querySelector('.getfindidbox').innerHTML = `찾은 아이디 : ${r.memail}`;
+            document.querySelector('.getfindidbox').innerHTML = `찾은 아이디 : ${r}`;
 
         }
     })

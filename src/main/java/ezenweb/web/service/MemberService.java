@@ -171,7 +171,9 @@ public class MemberService implements UserDetailsService , OAuth2UserService<OAu
     // 5. 아이디찾기
     @Transactional
     public String findId(MemberDto memberDto){
+        System.out.println("memberDto : " + memberDto);
         Optional<MemberEntity> optionalMemberEntity = memberEntityRepository.findByMnameAndMphone(memberDto.getMname(), memberDto.getMphone());
+        System.out.println("asd : " + optionalMemberEntity);
         if ( optionalMemberEntity.isPresent() ){
             return optionalMemberEntity.get().getMemail();
         }

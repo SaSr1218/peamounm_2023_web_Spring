@@ -62,14 +62,14 @@ public class MemberController {
     }
     // 5. 아이디 찾기
     @PostMapping("/find")
-    public String findId( MemberDto memberDto ){
+    public String findId(@RequestBody MemberDto memberDto ){
         String result = memberService.findId( memberDto );
         return result;
     }
 
     // 6. 비밀번호 찾기
     @PutMapping("/find")
-    public String findPassword( MemberDto memberDto ){
+    public String findPassword(@RequestBody MemberDto memberDto ){
         String result = memberService.findPassword( memberDto );
         return result;
     }
