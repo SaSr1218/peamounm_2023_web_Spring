@@ -53,6 +53,10 @@ public class MemberService implements UserDetailsService , OAuth2UserService<OAu
             name = (String)profile.get("nickname");
 
         }else if ( registrationId.equals("naver") ){
+            Map<String , Object >response = (Map<String, Object>) oAuth2User.getAttributes().get("response");
+
+            email = (String)response.get("email");
+            name = (String)response.get("nickname");
 
         }else if ( registrationId.equals("google") ) {
             // 구글 Attributes = { sub = 1231231231 , name = 최성아, given_name = 성아 , email = cc@naver.com }
@@ -72,13 +76,13 @@ public class MemberService implements UserDetailsService , OAuth2UserService<OAu
         memberDto.setMemail(email);
         memberDto.setMname(name);
             Set<GrantedAuthority> 권한목록 = new HashSet<>();
-            SimpleGrantedAuthority 권한 = new SimpleGrantedAuthority("ROLE_oauthuser");
+            SimpleGrantedAuthority 권한 = new SimpleGrantedAuthority("ROLE_user");
             권한목록.add(권한);
         memberDto.set권한목록(권한목록);
 
         // 1. DB 저장하기 전에
         Optional<MemberEntity> entity =  memberEntityRepository.findByMemail( email );
-        if ( !entity.isPresent() ) { // 첫 방문
+        if ( !entity.isPresent() ) { // 첫 방문               entity == null  -> optional이 아닐 경우!!
             // DB 처리 [ 첫 방문시에만 db 등록 , 두번째 방문부터는 db 수정 ]
             memberDto.setMrole("oauthuser"); // DB에 저장할 권한명
             memberEntityRepository.save( memberDto.toEntity() );
