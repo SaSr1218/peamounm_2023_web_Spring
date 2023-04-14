@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -21,6 +22,9 @@ public class MemberController {
     public Resource findId(){ return new ClassPathResource("templates/member/findid.html");}
     @GetMapping("/findpassword")
     public Resource findPassword(){ return new ClassPathResource("templates/member/findpassword.html");}
+    @GetMapping("/update")
+    public Resource getUpdate(){ return new ClassPathResource("templates/member/update.html");}
+
 
 
     // 1. @Autowird 생략 할 경우 ( JSP에서 싱글톤 만드는 방식처럼..)
@@ -49,15 +53,22 @@ public class MemberController {
     @PutMapping("/info")
     public boolean update( @RequestBody MemberDto memberDto ) {
         log.info("member info write : " + memberDto );
+        MemberDto dto = memberService.info();
+        memberDto.setMno( dto.getMno() );
         boolean result = memberService.update( memberDto );
         return result;
     }
 
     // 4. [D]회원정보 탈퇴
     @DeleteMapping("/info")
-    public boolean delete( @RequestParam int mno ){
-        log.info("member info write : " + mno );
-        boolean result = memberService.delete( mno );
+    public boolean delete( @RequestParam String mpassword ){
+        MemberDto dto =  memberService.info();
+        boolean result = false;
+
+        if(new BCryptPasswordEncoder().matches(mpassword, dto.getMpassword())){
+            result =  memberService.delete(dto.getMno());
+        }
+
         return result;
     }
     // 5. 아이디 찾기

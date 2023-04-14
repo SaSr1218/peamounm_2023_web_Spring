@@ -159,10 +159,11 @@ public class MemberService implements UserDetailsService , OAuth2UserService<OAu
         Optional<MemberEntity> entityOptional = memberEntityRepository.findById(memberDto.getMno() );
         if (entityOptional.isPresent()) {
             MemberEntity entity = entityOptional.get();
+
+            // setter로 mname, mphone만 수정
             entity.setMname(memberDto.getMname());
             entity.setMphone(memberDto.getMphone());
-            entity.setMrole(memberDto.getMrole());
-            entity.setMpassword(memberDto.getMpassword());
+
             return true;
         }
         return false;
@@ -173,7 +174,7 @@ public class MemberService implements UserDetailsService , OAuth2UserService<OAu
     public String findId(MemberDto memberDto){
         System.out.println("memberDto : " + memberDto);
         Optional<MemberEntity> optionalMemberEntity = memberEntityRepository.findByMnameAndMphone(memberDto.getMname(), memberDto.getMphone());
-        System.out.println("asd : " + optionalMemberEntity);
+        System.out.println("아이디찾기에 사용 : " + optionalMemberEntity);
         if ( optionalMemberEntity.isPresent() ){
             return optionalMemberEntity.get().getMemail();
         }
@@ -188,23 +189,18 @@ public class MemberService implements UserDetailsService , OAuth2UserService<OAu
         String newPwd = "";
 
         if(result){
-            Optional<MemberEntity> memberEntityOptional = memberEntityRepository.findByMemail(memberDto.getMemail());
-            System.out.println("memberService 비밀번호 찾기 : "+ memberEntityOptional.get());
+            Optional<MemberEntity> optionalMemberEntity = memberEntityRepository.findByMemail(memberDto.getMemail());
+            System.out.println("비밀번호찾기 사용 : " + optionalMemberEntity);
+            if(optionalMemberEntity.isPresent()){
+                MemberEntity entity = optionalMemberEntity.get();
 
-            if(memberEntityOptional.isPresent()){
-                MemberEntity entity = memberEntityOptional.get();
-
-                for(int i = 0; i < 6; i++){
+                for(int i = 0; i < 8; i++){
                     Random random = new Random();
-                    //ranStr 문자열에서 0인덱스 ~ 마지막 인덱스의 난수 인덱스 만들기
-                    int index = random.nextInt(charStr.length()); //0번 인덱스부터 마지막 인덱스[인덱스를 난수로 가져옴]
+                    int index = random.nextInt(charStr.length());
                     newPwd += charStr.charAt(index);
 
                 }
-                System.out.println("새로운 비밀번호 : " + newPwd);
-
                 entity.setMpassword(passwordEncoder.encode(newPwd));
-
                 return newPwd;
             }
         }

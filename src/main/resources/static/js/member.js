@@ -47,9 +47,13 @@ function getMember(){
         url : "/member/info",
         method : "get" ,
         success : (r) => {
+            if( r.mname != undefined){
             document.querySelector('.infobox').innerHTML = `${r.mname}님`
-            document.querySelector('.infobox').innerHTML +=
-            `<a href="/member/logout"> <button type="button">로그아웃</button></a>`
+            document.querySelector('.login_member').innerHTML =
+            `<a href="/member/logout"> <button type="button">로그아웃</button></a>
+            <button onclick="confirmPwd()" type="button">회원탈퇴</button>
+            <a href="/member/update"> <button type="button">회원수정</button></a>`
+            }
         }
     })
 }
@@ -114,5 +118,43 @@ function onfindPassword(){
 }
 
 // 5. 회원수정
+function onUpdate(){
+    let info = {
+        mphone : document.querySelector(".mphone").value,
+        mname : document.querySelector(".mname").value
+    }
+    $.ajax({
+        url : "/member/info" ,
+        method : "put" ,
+        data : JSON.stringify(info),
+        contentType : "application/json",
+        success : (r) => {
+            if( r == true ){
+                getMember();
+                location.href="/"
+            }
+
+        }
+    })
+
+}
+function confirmPwd(){
+    document.querySelector('.checkPwd').innerHTML = `비밀번호 확인 : <input type="text" name="mpassword" class="mpassword"><button onclick="onDelete()" type="button"> 계정탈퇴 </button>`
+}
 
 // 6. 회원삭제
+function onDelete(){
+   let mpassword = document.querySelector(".mpassword").value;
+
+   $.ajax({
+        url : "/member/info",
+        method : "delete",
+        data : {"mpassword" : mpassword},
+        success : function(data){
+                if(data == true){
+                       alert('계정탈퇴 성공');
+                       location.href = "/member/logout"
+                }
+        }
+   })
+}
