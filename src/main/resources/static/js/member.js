@@ -43,6 +43,23 @@ function onSignup(){
         alert('아이디가 중복됩니다.')
     }
 }
+// 2. 로그인(ajax로 폼 전송하기)
+function onLogin(){
+    let loginForm = document.querySelectorAll('.loginForm')[0];
+    let loginFormData = new FormData(loginForm);
+
+    $.ajax({
+        url : "/member/login" ,
+        method : "post" ,
+        data : loginFormData ,
+        contentType : false ,
+        processData : false ,
+        success : (r) => {
+            console.log(r);
+        }
+    })
+
+}
 
 // 2. 로그인하기
 /* 시큐리티 사용하므로 아래 코드 사용 X -> 폼 전송으로 로그인 요청
