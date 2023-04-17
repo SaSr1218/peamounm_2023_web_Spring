@@ -16,7 +16,7 @@ public class CategoryEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int cno;
     @Column
-    private String canme;
+    private String cname;
     // 양방향
     // 카테고리[pk] <----> 게시물[fk]
     // pk테이블에는 fk 흔적 남긴적이 없다.[ 필드 존재 X 객체 존재 O ]

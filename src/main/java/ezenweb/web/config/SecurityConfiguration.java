@@ -47,9 +47,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 
                 .and()
                     .csrf() // 사이트 간 요청 위조 [ post,put http 사용 불가 ]
+                    // .disable() // 모든 http csrf 해제
                         .ignoringAntMatchers("/member/info") // 특정 매핑URL csrf 무시
                         .ignoringAntMatchers("/member/login")
                         .ignoringAntMatchers("/member/find") // 아이디 찾기, 비밀번호 찾기 열기
+                        .ignoringAntMatchers("/board/category/write")
+                        .ignoringAntMatchers("/board/set")
 
                 .and() // 기능 추가할 때 사용되는 메소드
                     .formLogin()
