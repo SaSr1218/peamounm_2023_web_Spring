@@ -4,6 +4,8 @@ import ezenweb.web.domain.BaseTime;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter @Setter @ToString
 @AllArgsConstructor @NoArgsConstructor
@@ -19,6 +21,10 @@ public class MemberEntity extends BaseTime {
     @Column private String mname;       // 4. 회원이름
     @Column private String mphone;      // 5. 회원전화번호
     @Column private String mrole;       // 6. 회원등급
+
+    @OneToMany(mappedBy = "memberEntity")
+    @Builder.Default
+    private List<MemberEntity> memberEntityList = new ArrayList<MemberEntity>();
 
     // toDto = entity -> dto 용도 : 출력
     public MemberDto toDto(){
