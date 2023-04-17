@@ -39,8 +39,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         .hasRole("user") // 위 URL 패턴에 요청할 수 있는 권한명
                     .antMatchers("/admin/**")
                         .hasRole("admin")
-                    .antMatchers("/board/write")
-                        .hasRole("user")     
+                    //.antMatchers("/board/write")
+                    //    .hasRole("user")
                 .antMatchers("/**") // localhost:8080 ~ 이하 페이지는 권한 해제
                     .permitAll() // 권한 해제
                         // 토큰 ( ROLE_user ) : ROLE_ 제외한 권한명 작성
@@ -52,7 +52,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         .ignoringAntMatchers("/member/login")
                         .ignoringAntMatchers("/member/find") // 아이디 찾기, 비밀번호 찾기 열기
                         .ignoringAntMatchers("/board/category/write")
-                        .ignoringAntMatchers("/board/set")
+                        .ignoringAntMatchers("/board/write")
 
                 .and() // 기능 추가할 때 사용되는 메소드
                     .formLogin()
