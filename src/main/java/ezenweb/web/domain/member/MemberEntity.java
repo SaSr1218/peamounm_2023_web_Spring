@@ -1,6 +1,8 @@
 package ezenweb.web.domain.member;
 
 import ezenweb.web.domain.BaseTime;
+import ezenweb.web.domain.board.BoardEntity;
+import ezenweb.web.domain.board.ReplyEntity;
 import lombok.*;
 
 import javax.persistence.*;
@@ -22,9 +24,16 @@ public class MemberEntity extends BaseTime {
     @Column private String mphone;      // 5. 회원전화번호
     @Column private String mrole;       // 6. 회원등급
 
+    // 게시물목록 = 내가 쓴 게시물
     @OneToMany(mappedBy = "memberEntity")
     @Builder.Default
-    private List<MemberEntity> memberEntityList = new ArrayList<MemberEntity>();
+    private List<BoardEntity> boardEntityList = new ArrayList<>();
+
+    // 댓글목록 = 내가 쓴 댓글
+    @OneToMany(mappedBy = "memberEntity")
+    @Builder.Default
+    private List<ReplyEntity> replyEntityList = new ArrayList<>();
+
 
     // toDto = entity -> dto 용도 : 출력
     public MemberDto toDto(){

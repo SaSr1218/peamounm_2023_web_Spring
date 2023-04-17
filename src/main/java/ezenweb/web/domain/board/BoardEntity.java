@@ -1,15 +1,14 @@
 package ezenweb.web.domain.board;
 
 import ezenweb.web.domain.member.MemberEntity;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity@Table(name = "board")
-@Data@NoArgsConstructor@AllArgsConstructor
+@Data@NoArgsConstructor@AllArgsConstructor@Builder
 public class BoardEntity {
 
     @Id
@@ -32,5 +31,9 @@ public class BoardEntity {
     @ToString.Exclude
     private MemberEntity memberEntity;
 
+    // 댓글목록
+    @OneToMany(mappedBy = "boardEntity")
+    @Builder.Default
+    private List<ReplyEntity> replyEntityList = new ArrayList<>();
 
 }
