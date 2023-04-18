@@ -38,6 +38,7 @@ let selectCno = 0; // 선택된 카레고리 번호[ 기본값 = 0 ( 전체보�
 function selectorCno( cno ){
     console.log( cno +" 의 카테고리 선택");
     selectCno = cno; // 이벤트로 선택한 카테고리 번호를 전역변수에 대입
+    getBoard ( cno ); // 선택된 카테고리 기준으로 게시물 출력
 }
 
 // 4. 게시물 쓰기
@@ -68,8 +69,18 @@ function setBoard(){
     })
 }
 
-// 5. 게시물 출력
+// 5. 게시물 출력 [ 선택된 카테고리의 게시물 출력 ]
+getBoard(0)
 function getBoard( cno ){
+    selectCno = cno;
+    $.ajax({
+        url : "/board/list" ,
+        method : "get" ,
+        data : { "cno" : selectCno } ,
+        success : (r) => {
+            console.log(r);
+        }
+    })
 
 }
 
