@@ -47,7 +47,7 @@ function setBoard(){
         alert('작성할 게시물의 카테고리를 선택해주세요.'); return;
     }
 
-    let info = { // @RequestBody 이용한 json
+    let info = { // @RequestBody 이용한 json 요청값을 자동으로 dto 매핑하기 위해서 조건 [ 필드명 동일 ]
         btitle : document.querySelector(".btitle").value,
         bcontent : document.querySelector(".bcontent").value,
         cno : selectCno
@@ -69,7 +69,7 @@ function setBoard(){
     })
 }
 
-// 5. 게시물 출력 [ 선택된 카테고리의 게시물 출력 ]
+// 5. 게시물 리스트 출력 [ 선택된 카테고리의 게시물 출력 ]
 getBoard(0)
 function getBoard( cno ){
     selectCno = cno;
@@ -79,6 +79,39 @@ function getBoard( cno ){
         data : { "cno" : selectCno } ,
         success : (r) => {
             console.log(r);
+            let html = ` <tr> <th> 번호 </th><th> 제목 </th><th> 작성자 </th>
+                            <th> 작성일 </th> <th> 조회수 </th>
+                        </tr>`;
+            r.forEach( ( o ) => {
+                html += ` <tr> <td> ${ o.bno } </td> <td> ${ o.btitle } </td>
+                            <td> ${ o.mname } </td>  <td> ${ o.bdate } </td>
+                            <td> ${ o.bview } </td>
+                        </tr>
+                `
+            })
+            document.querySelector('.boardlistbox').innerHTML = html;
+        }
+    })
+}
+
+// 6. 내가 작성한(로그인 되어있는 가정) 게시물
+function myboards(){
+    $.ajax({
+        url : "/board/myboards" ,
+        method : "get" ,
+        success : (r) => {
+            console.log(r);
+            let html = ` <tr> <th> 번호 </th><th> 제목 </th><th> 작성자 </th>
+                            <th> 작성일 </th> <th> 조회수 </th>
+                        </tr>`;
+            r.forEach( ( o ) => {
+                html += ` <tr> <td> ${ o.bno } </td> <td> ${ o.btitle } </td>
+                            <td> ${ o.mname } </td>  <td> ${ o.bdate } </td>
+                            <td> ${ o.bview } </td>
+                        </tr>
+                `
+            })
+            document.querySelector('.boardlistbox').innerHTML = html;
         }
     })
 

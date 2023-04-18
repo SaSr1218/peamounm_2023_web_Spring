@@ -72,28 +72,41 @@ public class BoardService {
     }
 
     // 4. 카테고리별 게시물 출력
+    @Transactional
     public List<BoardDto> list(int cno){ log.info("s list cno : " + cno);
-
-        Optional<CategoryEntity> entityOptional;
+        List<BoardDto> list = new ArrayList<>();
         if ( cno == 0 ) { // 전체 보기
-
-            List<BoardDto> list = new ArrayList<>();
-
             List<BoardEntity> boardEntityList = boardEntityRepository.findAll(); // 모든 카테고리 정보 전체 출력
+
             boardEntityList.forEach( (e) -> { // 엔티티[레코드] 하나씩 반복문
                 list.add(e.toDto()); // 엔티티[레코드] 하나씩 dto 변환 후 리스트 담기
             });
-            return list; // 리스트 반환
-        } else {
-            entityOptional = categoryRepository.findById( cno ); // 해당 cno의 카테고리 정보 전체 출력
+        } else { // 카테고리별 출력
+            Optional<CategoryEntity> categoryEntityOptional = categoryRepository.findById( cno ); // 해당 cno의 카테고리 정보 전체 출력
+            log.info("if 위");
+            if ( categoryEntityOptional.isPresent() ){
+                log.info("asd" + categoryEntityOptional.get());
+                categoryEntityOptional.get().getBoardEntityList().forEach( (e)->{
+                    list.add( e.toDto() );
+                });
+            }
         }
-        return null;
+        return list;
     }
 
     // 5. 내가 쓴 게시물 출력
-    public List<BoardDto> myboards(){
-        log.info("s myboards : ");
-        return null;
+    public List<BoardDto> myboards(){ log.info("s myboards : ");
+        // 1. 로그인 인증 세션 호출 [ object ] --> dto 강제형변환
+        MemberDto memberDto = (MemberDto)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            // 일반회원 : 모든정보 vs oauth회원 : memail , mname , mrole
+        // 2. 회원 엔티티 찾기
+        MemberEntity entity =  memberEntityRepository.findByMemail( memberDto.getMemail() ).get();
+        // 3. 회원 엔티티 내 게시물리스트 반복문 돌려서 dto 리스트 로 변환
+        List<BoardDto> list = new ArrayList<>();
+        entity.getBoardEntityList().forEach((e) -> {
+            list.add( e.toDto() );
+        });
+        return list;
     }
 
 }

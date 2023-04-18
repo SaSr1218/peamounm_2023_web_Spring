@@ -64,8 +64,7 @@ public class BoardController {
 
     // 5. 내가 쓴 게시물 출력
     @GetMapping("/myboards")
-    public List<BoardDto> myboards(){
-        log.info("s myboards : ");
+    public List<BoardDto> myboards(){log.info("s myboards : ");
         List<BoardDto> result = boardService.myboards();
         return result;
 
