@@ -92,7 +92,8 @@ function getMember(){
             document.querySelector('.login_member').innerHTML =
             `<a href="/member/logout"> <button type="button">로그아웃</button></a>
             <button onclick="confirmPwd()" type="button">회원탈퇴</button>
-            <a href="/member/update"> <button type="button">회원수정</button></a>`
+            <a href="/member/update"> <button type="button">회원수정</button></a>
+            <a href="/board"> 게시판 </a>`
             }
         }
     })
