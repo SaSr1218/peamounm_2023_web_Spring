@@ -97,6 +97,28 @@ function getBoard( cno ){
     })
 }
 
+// 6. 내가 작성한(로그인 되어있는 가정) 게시물
+function myboards(){
+    $.ajax({
+        url : "/board/myboards" ,
+        method : "get" ,
+        success : (r) => {
+            console.log(r);
+            let html = ` <tr> <th> 번호 </th><th> 제목 </th><th> 작성자 </th>
+                            <th> 작성일 </th> <th> 조회수 </th>
+                        </tr>`;
+            r.forEach( ( o ) => {
+                html += ` <tr> <td> ${ o.bno } </td> <td> ${ o.btitle } </td>
+                            <td> ${ o.mname } </td>  <td> ${ o.bdate } </td>
+                            <td> ${ o.bview } </td>
+                        </tr>
+                `
+            })
+            document.querySelector('.boardlistbox').innerHTML = html;
+        }
+    })
+}
+
 // 7. 게시물 선택번호전달
 let selectBno = 0;
 function selectorBno( bno ){
@@ -133,7 +155,7 @@ function boardclick( bno ){
 // 9. 게시물삭제
 function boardDelete(bno){
     $.ajax({
-        url : "/board/delete",
+        url : "/board/click",
         method : "delete",
         data : {"bno" : selectBno } ,
         success : (r) => {
@@ -149,32 +171,6 @@ function boardDelete(bno){
         }
     })
 }
-
-
-// 6. 내가 작성한(로그인 되어있는 가정) 게시물
-function myboards(){
-    $.ajax({
-        url : "/board/myboards" ,
-        method : "get" ,
-        success : (r) => {
-            console.log(r);
-            let html = ` <tr> <th> 번호 </th><th> 제목 </th><th> 작성자 </th>
-                            <th> 작성일 </th> <th> 조회수 </th>
-                        </tr>`;
-            r.forEach( ( o ) => {
-                html += ` <tr> <td> ${ o.bno } </td> <td> ${ o.btitle } </td>
-                            <td> ${ o.mname } </td>  <td> ${ o.bdate } </td>
-                            <td> ${ o.bview } </td>
-                        </tr>
-                `
-            })
-            document.querySelector('.boardlistbox').innerHTML = html;
-        }
-    })
-
-}
-
-
 
 
 

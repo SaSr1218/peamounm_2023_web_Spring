@@ -78,7 +78,7 @@ public class BoardController {
     }
 
     // 7. 개별 게시물 삭제
-    @DeleteMapping("/delete")
+    @DeleteMapping("/click")
     public int boardDelete(@RequestParam int bno){ log.info("deleteBoard bno : " + bno);
         int result = boardService.boardDelete(bno);
         return result;

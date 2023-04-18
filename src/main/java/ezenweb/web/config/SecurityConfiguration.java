@@ -54,7 +54,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         .ignoringAntMatchers("/board/category/write")
                         .ignoringAntMatchers("/board/write")
                         .ignoringAntMatchers("/board/click")
-                        .ignoringAntMatchers("/board/delete")
 
                 .and() // 기능 추가할 때 사용되는 메소드
                     .formLogin()

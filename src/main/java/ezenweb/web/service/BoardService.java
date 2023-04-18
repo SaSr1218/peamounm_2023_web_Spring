@@ -92,29 +92,6 @@ public class BoardService {
         return list;
     }
 
-    // 6. 개별 게시물 출력
-    @Transactional
-    public BoardDto boardclick( int bno ){ log.info("s list bno : " + bno);
-        return boardEntityRepository.findById(bno).get().toDto();
-    }
-
-    // 7. 개별 게시물 삭제
-    @Transactional
-    public int boardDelete( int bno ){
-        MemberDto memberDto = (MemberDto)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-        Optional<BoardEntity> optionalBoard = boardEntityRepository.findById(bno);
-        if(optionalBoard.isPresent()){ //포장안의 정보가 들어 있고,
-            if(memberDto.getMemail().equals(optionalBoard.get().getMemberEntity().getMemail())){
-                boardEntityRepository.delete(optionalBoard.get());
-                return 0;
-            }else{
-                return 2; // 자신의 게시물이 아닐 경우
-            }
-        }
-        return 1; //해당 게시물이 이미 삭제되거나 없을 경우
-    }
-
     // 5. 내가 쓴 게시물 출력
     public List<BoardDto> myboards(){ log.info("s myboards : ");
         // 1. 로그인 인증 세션 호출 [ object ] --> dto 강제형변환
@@ -130,6 +107,27 @@ public class BoardService {
         return list;
     }
 
+    // 6. 개별 게시물 출력
+    @Transactional
+    public BoardDto boardclick( int bno ){ log.info("s list bno : " + bno);
+        return boardEntityRepository.findById(bno).get().toDto();
+    }
 
+    // 7. 개별 게시물 삭제
+    @Transactional
+    public int boardDelete( int bno ){
+        MemberDto memberDto = (MemberDto)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        Optional<BoardEntity> optionalBoard = boardEntityRepository.findById(bno);
+        if(optionalBoard.isPresent()){
+            if(memberDto.getMemail().equals(optionalBoard.get().getMemberEntity().getMemail())){
+                boardEntityRepository.delete(optionalBoard.get());
+                return 0;
+            }else{
+                return 2; // 자신의 게시물이 아닐 경우
+            }
+        }
+        return 1; //해당 게시물이 이미 삭제되거나 없을 경우
+    }
 
 }
