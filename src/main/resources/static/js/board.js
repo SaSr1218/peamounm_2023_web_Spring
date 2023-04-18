@@ -14,6 +14,7 @@ function setCategory(){  console.log("setCategory()")
         } // success end
     }) // ajax end
 } // setCategory end
+
 // 2. 카테고리 모든 출력
 getCategory()
 function getCategory(){
@@ -33,6 +34,7 @@ function getCategory(){
         }
     })
 }
+
 // 3. 카테고리 선택
 let selectCno = 0; // 선택된 카레고리 번호[ 기본값 = 0 ( 전체보기 ) ]
 function selectorCno( cno ){
@@ -83,7 +85,8 @@ function getBoard( cno ){
                             <th> 작성일 </th> <th> 조회수 </th>
                         </tr>`;
             r.forEach( ( o ) => {
-                html += ` <tr> <td> ${ o.bno } </td> <td> ${ o.btitle } </td>
+                html += ` <tr>
+                            <td><button onclick="boardclick(${ o.bno })" type="button"> ${ o.bno } </button> </td> <td> ${ o.btitle } </td>
                             <td> ${ o.mname } </td>  <td> ${ o.bdate } </td>
                             <td> ${ o.bview } </td>
                         </tr>
@@ -93,6 +96,60 @@ function getBoard( cno ){
         }
     })
 }
+
+// 7. 게시물 선택번호전달
+let selectBno = 0;
+function selectorBno( bno ){
+    console.log( bno +"의 게시물 선택")
+    selectBno = bno;
+}
+
+// 8. 게시물 선택
+function boardclick( bno ){
+    selectBno = bno;
+    $.ajax({
+        url : "/board/click" ,
+        method : "get" ,
+        data : { "bno" : selectBno } ,
+        success : (r) => {
+            console.log(r);
+            let html = ` <tr>
+                            <th> 게시물번호 </th><th> 게시물제목 </th><th> 게시물내용 </th>
+                            <th> 게시물조회수 </th><th> 게시물등록일 </th> <th> 작성자 </th>
+                            <th> 비고 </th>
+                        </tr>`;
+
+                html += ` <tr>
+                            <td> ${ r.bno }</td> <td> ${ r.btitle } </td> <td> ${ r.bcontent } </td>
+                            <td> ${ r.bview } </td> <td> ${ r.bdate } </td> <td> ${ r.mname } </td>
+                            <td> <button onclick="boardDelete(${r.bno})"> 삭제 </button> </td>
+                        </tr>
+                `
+            document.querySelector('.boardbox').innerHTML = html;
+        }
+    })
+}
+
+// 9. 게시물삭제
+function boardDelete(bno){
+    $.ajax({
+        url : "/board/delete",
+        method : "delete",
+        data : {"bno" : selectBno } ,
+        success : (r) => {
+            console.log(r);
+            if (r == 0){
+                alert('삭제성공')
+            } else if ( r == 1 ){
+                alert('삭제 할 수 없습니다.')
+            } else if ( r == 2 ){
+                alert('삭제권한이 없습니다.')
+            }
+
+        }
+    })
+}
+
 
 // 6. 내가 작성한(로그인 되어있는 가정) 게시물
 function myboards(){
@@ -116,6 +173,9 @@ function myboards(){
     })
 
 }
+
+
+
 
 
 /*

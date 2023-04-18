@@ -28,7 +28,6 @@ public class BoardEntity extends BaseTime {
 
     // 작성일, 수정일 BaseTime 클래스로부터 상속받아서 사용
 
-
     // Fk = 외래키
     // 카테고리번호 [ fk ]
     @ManyToOne // 다수가 하나에게 [ fk --> pk ]

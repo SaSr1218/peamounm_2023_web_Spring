@@ -83,15 +83,36 @@ public class BoardService {
             });
         } else { // 카테고리별 출력
             Optional<CategoryEntity> categoryEntityOptional = categoryRepository.findById( cno ); // 해당 cno의 카테고리 정보 전체 출력
-            log.info("if 위");
             if ( categoryEntityOptional.isPresent() ){
-                log.info("asd" + categoryEntityOptional.get());
                 categoryEntityOptional.get().getBoardEntityList().forEach( (e)->{
                     list.add( e.toDto() );
                 });
             }
         }
         return list;
+    }
+
+    // 6. 개별 게시물 출력
+    @Transactional
+    public BoardDto boardclick( int bno ){ log.info("s list bno : " + bno);
+        return boardEntityRepository.findById(bno).get().toDto();
+    }
+
+    // 7. 개별 게시물 삭제
+    @Transactional
+    public int boardDelete( int bno ){
+        MemberDto memberDto = (MemberDto)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        Optional<BoardEntity> optionalBoard = boardEntityRepository.findById(bno);
+        if(optionalBoard.isPresent()){ //포장안의 정보가 들어 있고,
+            if(memberDto.getMemail().equals(optionalBoard.get().getMemberEntity().getMemail())){
+                boardEntityRepository.delete(optionalBoard.get());
+                return 0;
+            }else{
+                return 2; // 자신의 게시물이 아닐 경우
+            }
+        }
+        return 1; //해당 게시물이 이미 삭제되거나 없을 경우
     }
 
     // 5. 내가 쓴 게시물 출력
@@ -108,5 +129,7 @@ public class BoardService {
         });
         return list;
     }
+
+
 
 }

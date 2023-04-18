@@ -53,6 +53,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         .ignoringAntMatchers("/member/find") // 아이디 찾기, 비밀번호 찾기 열기
                         .ignoringAntMatchers("/board/category/write")
                         .ignoringAntMatchers("/board/write")
+                        .ignoringAntMatchers("/board/click")
+                        .ignoringAntMatchers("/board/delete")
 
                 .and() // 기능 추가할 때 사용되는 메소드
                     .formLogin()
