@@ -1,8 +1,8 @@
 /* 컴포넌트 원형 */
-/*
-import React from 'react'
-export default function 컴포넌트(){ return ( <> </> ) }
-*/
+    /*
+    import React from 'react'
+    export default function 컴포넌트(){ return ( <> </> ) }
+    */
 
 // props : propertices 약자
 
@@ -17,5 +17,4 @@ export default function Product( props ){
             <h6> 가격 : { props.price }  </h6>
         </div>
     </> )
-
 }
