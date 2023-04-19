@@ -6,11 +6,11 @@ import AddTodo from './AddTodo';
 
 export default function AppTodo( props ){
 
-    // 1.
-    // item 객체에 { id : "0" , title : "Hello World 1" , done : true } 초기값을 대입한 것
+    // 1. // item 객체에 { id : "0" , title : "Hello World 1" , done : true } 초기값을 대입한 것
     const [ items , setItems ] = useState (
         [ // array start
-            {
+
+            /* {
                 id : "0" ,
                 title : "Hello World 1" ,
                 done : true
@@ -19,16 +19,16 @@ export default function AppTodo( props ){
                 id : "1" ,
                 title : "Hello World 2" ,
                 done : true
-            }
+            } */
         ] // array end
     ) // useState 함수 end
 
+    // 2. items에 새로운 item 등록하는 함수
     const addItem = (item) => {
         item.id = "ID-" + items.length; // key 를 위한 id
-        item.done = false; // done 초기화
-        // 업데이트는 반드시 setItems로 하고 새 배열을 만들어야 한다.
-        setItems([...items, item]);
-        console.log("items : " , items );
+        item.done = false;
+        setItems([...items, item]); // 기존 상태 items 에 item 추가
+        // setItems ( [ ...상태명, 추가할 데이터 ] );
 
     };
 
