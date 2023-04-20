@@ -12,10 +12,31 @@ import Clock from './example/ex1component/Clock';
 import Comment from './example/ex2css/Comment';
 import CommentList from './example/ex2css/CommentList';
 import AppTodo from './example/exbook/AppTodo';
+import Hook1 from './example/ex3hook/Hook1';
+import Hook2 from './example/ex3hook/Hook2';
 
 // 1. HTML에 존재하는 div 가져오기 [ document.getElementById('root') ]
 // 2. ReachDOM.createRoot ( 해당 div ) : 해당 div를 리액트 root 로 사용하여 root 객체 생성
 const root = ReactDOM.createRoot(document.getElementById('root'));
+
+/*
+// 8. Hook2 useState, useEffect 사용 예제
+root.render(
+  // <React.StrictMode>
+    <Hook2 />
+  // </React.StrictMode>
+);
+*/
+
+/*
+// 7. Hook1 useState, useEffect 사용 예제
+root.render(
+  <React.StrictMode>
+    <Hook1 />
+  </React.StrictMode>
+);
+*/
+
 
 // 6. 교재 Todo 컴포넌트 적용
 root.render(
@@ -23,6 +44,7 @@ root.render(
     <AppTodo />
   </React.StrictMode>
 );
+
 
 /*
 // 5. 예제5 css 적용

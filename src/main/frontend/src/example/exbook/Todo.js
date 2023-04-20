@@ -4,6 +4,7 @@ import { ListItem , ListItemText , InputBase ,
          Checkbox , ListItemSecondaryAction , IconButton } from '@mui/material';
 // 삭제 아이콘
 import DeleteOutlined from '@mui/icons-material/DeleteOutlined'
+import axios from 'axios';
 
 export default function Todo(props){ // 3번 !_!
     console.log( props )
@@ -21,15 +22,16 @@ export default function Todo(props){ // 3번 !_!
     // 4. readOnly = true 초기화가 된 필드/변수 와 해당 필드를 수정할 수 있는 함수
     const [ readOnly , setReadOnly ] = useState(true);
 
-    // 5. 읽기모드 해제
+    // 5. 읽기모드 해제 -> 수정 가능
     const turnOffReadOnly = () => {
         setReadOnly(false);
     }
 
-    // 6. 읽기모드 켜기
+    // 6. 읽기모드 켜기 -> 수정 금지
     const turnOnReadOnly = (e) => {
         if (e.key === "Enter"){
             setReadOnly(true);
+            axios.put("http://localhost:8080/todo",{ id : item.id, done : item.done ,title : item.title }).then(r=>{console.log(r)});
         }
     }
 
