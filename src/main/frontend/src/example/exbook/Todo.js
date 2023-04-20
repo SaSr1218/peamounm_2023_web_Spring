@@ -13,17 +13,48 @@ export default function Todo(props){ // 3번 !_!
 
     // 2. props 전달된 삭제함수 변수로 이동
     const deleteItem = props.삭제함수;
-
     // 3. 삭제함수 이벤트처리 핸들러
     const deleteEventHandler = () => {
         deleteItem(item); // 5번 !_!
     }
 
+    // 4. readOnly = true 초기화가 된 필드/변수 와 해당 필드를 수정할 수 있는 함수
+    const [ readOnly , setReadOnly ] = useState(true);
+
+    // 5. 읽기모드 해제
+    const turnOffReadOnly = () => {
+        setReadOnly(false);
+    }
+
+    // 6. 읽기모드 켜기
+    const turnOnReadOnly = (e) => {
+        if (e.key === "Enter"){
+            setReadOnly(true);
+        }
+    }
+
+    // 7. 입력받은 값을 변경
+    let editItem = props.수정함수;
+
+    const editEventHandler = (e) => {
+        item.title = e.target.value;
+        editItem();
+    }
+
+    // 8. 체크박스 수정업데이트
+    const checkboxEventHandler = (e) => {
+        item.done = e.target.checked;
+        editItem();
+    }
+
     return( <>
         <ListItem>
-            <Checkbox checked = { item.done } />
+            <Checkbox checked = {item.done} onChange={checkboxEventHandler} />
             <ListItemText>
-                <InputBase
+                <InputBase inputProps={{ readOnly: readOnly }}
+                    onClick={turnOffReadOnly}
+                    onKeyDown={turnOnReadOnly}
+                    onChange = { editEventHandler }
                     type="text"
                     id={ item.id }
                     name={ item.name }
@@ -37,7 +68,6 @@ export default function Todo(props){ // 3번 !_!
                     <DeleteOutlined />
                 </IconButton>
             </ListItemSecondaryAction>
-
         </ListItem>
     </> );
 
