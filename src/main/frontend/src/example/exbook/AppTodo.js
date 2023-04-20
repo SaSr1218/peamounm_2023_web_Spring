@@ -31,18 +31,19 @@ export default function AppTodo( props ){
     const addItem = ( item ) =>{ // 함수로부터 매개변로 전달은 item
 /*      item.id = "ID-"+items.length     // ID 구성 // ??? DB PK 사용
         item.done = false;              // 체크 여부*/
-                        axios.get( "http://localhost:8080/todo" )
-                            .then( r => {
-                                console.log( r );
-                                setItems( r.data ); // 서버에게 응답받은 리스트를 재렌더링
-                            })
+
         setItems( [...items , item ] ); // 기존 상태 items 에 item 추가
         // item = { title : "입력받은값" , id = "id-배열길이" , done = "기본값false" }
         // setItems( [ ...상태명 , 추가할 데이터 ] );
         axios.post( "http://localhost:8080/todo" , { title : item.title } ).then( r => { console.log( r ); });
-
+                                axios.get( "http://localhost:8080/todo" )
+                                    .then( r => {
+                                        console.log( r );
+                                        setItems( r.data ); // 서버에게 응답받은 리스트를 재렌더링
+                                    })
 
     }
+
     // 3. items에 item 삭제
     const deleteItem = (item)=>{
         console.log(items);
