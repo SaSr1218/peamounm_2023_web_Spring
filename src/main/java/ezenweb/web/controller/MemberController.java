@@ -11,19 +11,20 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @Slf4j
-@RequestMapping("/member")
+@RequestMapping("/login.css")
 public class MemberController {
 
-    @GetMapping("/signup")
-    public Resource getSignup(){ return new ClassPathResource("templates/member/signup.html");}
+    // 서버 사이드 라이팅 : 클라이언트가 서버에게 html 요청하는 방식 [ 리액트 통합 개발일경우 사용 XXX ]
+/*    @GetMapping("/signup")
+    public Resource getSignup(){ return new ClassPathResource("templates/login.css/signup.html");}
     @GetMapping("/login")
-    public Resource getLogin(){ return new ClassPathResource("templates/member/login.html");}
+    public Resource getLogin(){ return new ClassPathResource("templates/login.css/login.html");}
     @GetMapping("/findid")
-    public Resource findId(){ return new ClassPathResource("templates/member/findid.html");}
+    public Resource findId(){ return new ClassPathResource("templates/login.css/findid.html");}
     @GetMapping("/findpassword")
-    public Resource findPassword(){ return new ClassPathResource("templates/member/findpassword.html");}
+    public Resource findPassword(){ return new ClassPathResource("templates/login.css/findpassword.html");}
     @GetMapping("/update")
-    public Resource getUpdate(){ return new ClassPathResource("templates/member/update.html");}
+    public Resource getUpdate(){ return new ClassPathResource("templates/login.css/update.html");}*/
 
 
 
@@ -37,7 +38,7 @@ public class MemberController {
     // 1. [C]회원가입
     @PostMapping("/info")
     public boolean write( @RequestBody MemberDto memberDto ){
-        log.info("member info write : " + memberDto );
+        log.info("login.css info write : " + memberDto );
         boolean result = memberService.write(memberDto);
         return result;
     }
@@ -52,7 +53,7 @@ public class MemberController {
     // 3. [U]회원정보 수정
     @PutMapping("/info")
     public boolean update( @RequestBody MemberDto memberDto ) {
-        log.info("member info write : " + memberDto );
+        log.info("login.css info write : " + memberDto );
         MemberDto dto = memberService.info();
         memberDto.setMno( dto.getMno() );
         boolean result = memberService.update( memberDto );

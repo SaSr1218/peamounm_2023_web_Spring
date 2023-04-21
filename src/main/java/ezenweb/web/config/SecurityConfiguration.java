@@ -35,7 +35,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http
                 // 권한에 따른 HTTP GET 요청 제한
                 .authorizeHttpRequests() // HTTP 인증 요청
-                    .antMatchers("/member/info/mypage") // 인증시에만 사용할 URL
+                    .antMatchers("/login.css/info/mypage") // 인증시에만 사용할 URL
                         .hasRole("user") // 위 URL 패턴에 요청할 수 있는 권한명
                     .antMatchers("/admin/**")// ~~ 이하 페이지는 admin만 가능
                         .hasRole("admin")
@@ -48,27 +48,27 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
                     .csrf() // 사이트 간 요청 위조 [ post,put http 사용 불가 ]
                     // .disable() // 모든 http csrf 해제
-                        .ignoringAntMatchers("/member/info") // 특정 매핑URL csrf 무시
-                        .ignoringAntMatchers("/member/login")
-                        .ignoringAntMatchers("/member/find") // 아이디 찾기, 비밀번호 찾기 열기
+                        .ignoringAntMatchers("/login.css/info") // 특정 매핑URL csrf 무시
+                        .ignoringAntMatchers("/login.css/login")
+                        .ignoringAntMatchers("/login.css/find") // 아이디 찾기, 비밀번호 찾기 열기
                         .ignoringAntMatchers("/board/category/write")
                         .ignoringAntMatchers("/board/write")
                         .ignoringAntMatchers("/board/click")
                         .ignoringAntMatchers("/todo")
                 .and() // 기능 추가할 때 사용되는 메소드
                     .formLogin()
-                        .loginPage("/member/login")               // 로그인페이지로 사용할 URL
-                        .loginProcessingUrl("/member/login")      // 로그인 처리할 매핑 URL
+                        .loginPage("/login.css/login")               // 로그인페이지로 사용할 URL
+                        .loginProcessingUrl("/login.css/login")      // 로그인 처리할 매핑 URL
                         //.defaultSuccessUrl("/")                 // 로그인 성공시 이동할 매핑 url
                         .successHandler(authSuccessFailHandler)
-                        //.failureUrl("/member/login")  // 로그인 실패할경우 이동할 매핑 URL
+                        //.failureUrl("/login.css/login")  // 로그인 실패할경우 이동할 매핑 URL
                         .failureHandler(authSuccessFailHandler)
                         .usernameParameter("memail")              // 로그인 시 사용될 계정 아이디 필드명
                         .passwordParameter("mpassword")           // 로그인 시 사용될 계정 패스워드 필드명
 
                 .and()
                     .logout()
-                        .logoutRequestMatcher(new AntPathRequestMatcher("/member/logout"))   // 로그아웃 처리 를 요청할 매핑 URL
+                        .logoutRequestMatcher(new AntPathRequestMatcher("/login.css/logout"))   // 로그아웃 처리 를 요청할 매핑 URL
                         .logoutSuccessUrl("/")           // 로그아웃 성공할 경우 이동할 매핑 URL
                         .invalidateHttpSession(true)     // 세션 초기화
 

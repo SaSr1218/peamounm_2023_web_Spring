@@ -9,12 +9,12 @@ public interface MemberEntityRepository extends JpaRepository< MemberEntity , In
 
     // 1. 해당 이메일로 엔티티 찾기
         // 인수로 들어온 memail과 동일한 엔티티[레코드] 찾아서 반환
-        // sql :  select * from member where memail = ?;
+        // sql :  select * from login.css where memail = ?;
     Optional<MemberEntity> findByMemail(String memail);
 
     // 2. 해당 이메일과 비밀번호가 일치한 엔티티 여부 확인
         // 인수로 들어온 이메일과 패스워드가 모두 일치한 엔티티[레코드] 찾아서 존재 여부 반환
-        // sql : select * from member where meamil = ? and mpassword = ?;
+        // sql : select * from login.css where meamil = ? and mpassword = ?;
     Optional<MemberEntity> findByMemailAndMpassword(String memail , String mpassword);
 
     // 3. [ 중복체크 활용 ] 만약에 동일한 이메일이 존재하면 true , 아니면 false
@@ -47,8 +47,8 @@ public interface MemberEntityRepository extends JpaRepository< MemberEntity , In
 
     ---------------- 그외 추가 메소드 만들기 --------------
     검색[ 레코드 반환 ]
-        -> .findBy필드명( 인수 )      select * from member where memail = ?;
-        -> .findBy필드명And필드명     select * from member where meamil = ? and mpassword = ?;
+        -> .findBy필드명( 인수 )      select * from login.css where memail = ?;
+        -> .findBy필드명And필드명     select * from login.css where meamil = ? and mpassword = ?;
         -> .findBy필드명or필드명
     검색여부 [ true , false ]
         .existsBy필드명( 인수 )

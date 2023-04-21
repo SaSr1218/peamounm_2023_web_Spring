@@ -19,7 +19,7 @@ public class 실행 {
         Board board2 = new Board();
         board2.번호 =2 ; board2.내용="카카"; board2.작성자 = 유재석;
 
-        // ?? 게시물객체를 통해 member 객체 알수 있을까?
+        // ?? 게시물객체를 통해 login.css 객체 알수 있을까?
         // 1. 1번 게시물 작성자는?
         System.out.println( board1.작성자 );
         // 2. 2번 게시물 작성자??

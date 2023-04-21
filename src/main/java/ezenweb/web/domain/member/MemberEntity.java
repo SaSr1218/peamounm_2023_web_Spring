@@ -13,7 +13,7 @@ import java.util.List;
 @AllArgsConstructor @NoArgsConstructor
 @Builder
 @Entity
-@Table(name="member")
+@Table(name="login.css")
 public class MemberEntity extends BaseTime {
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY )
