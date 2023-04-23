@@ -6,12 +6,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @Slf4j
-@RequestMapping("/login.css")
+@RequestMapping("/member")
+@CrossOrigin(origins = "http://localhost:3000")
 public class MemberController {
 
     // 서버 사이드 라이팅 : 클라이언트가 서버에게 html 요청하는 방식 [ 리액트 통합 개발일경우 사용 XXX ]
@@ -46,8 +48,8 @@ public class MemberController {
     // 2. [R]회원정보 호출
     @GetMapping("/info")
     public MemberDto info(){
-        MemberDto result = memberService.info();
-        return result;
+        MemberDto memberDto = memberService.info();
+        return memberDto;
     }
 
     // 3. [U]회원정보 수정
@@ -62,15 +64,17 @@ public class MemberController {
 
     // 4. [D]회원정보 탈퇴
     @DeleteMapping("/info")
-    public boolean delete( @RequestParam String mpassword ){
-        MemberDto dto =  memberService.info();
+    public boolean delete(@RequestParam String mpassword){
+        System.out.println("controller에 memberpassword 들어옴 : " + mpassword);
+        MemberDto memberDto = (MemberDto) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         boolean result = false;
 
-        if(new BCryptPasswordEncoder().matches(mpassword, dto.getMpassword())){
-            result =  memberService.delete(dto.getMno());
+        if(new BCryptPasswordEncoder().matches(mpassword, memberDto.getMpassword())){
+            result =  memberService.delete(memberDto.getMno());
         }
 
         return result;
+
     }
     // 5. 아이디 찾기
     @PostMapping("/find")
