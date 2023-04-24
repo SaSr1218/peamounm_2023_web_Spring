@@ -1,31 +1,21 @@
-import React , { useState , useEffect } from 'react'
-import axios from 'axios'
+import React, {useState, useEffect} from 'react';
+import axios from 'axios';
 
-export default function Signup( props ){
+export default function Signup(props){
 
+        let [ memailMsg , setMemailMsg ] = useState('');
 
-        // 0. ID 중복 체크
-        const checkId = () => {
-            console.log("checkId 들어옴")
-
-            axios.get("http://localhost:8080/member/find", {params : {memail : document.querySelector(".memail").value}})
+        const checkId = (e) => {
+            axios.get("http://localhost:8080/member/find", {params : {memail : e.target.value}})
             .then(r => {
-                if(r.data == false){
-                    document.querySelector(".checkIdtxt").innerHTML = `중복된 아이디입니다.`;
-                }else{
-                    document.querySelector(".checkIdtxt").innerHTML = `O`;
-                }
+                if(r.data == false){  setMemailMsg('중복된 아이디입니다.');  }
+                else{ setMemailMsg('사용가능한 아이디입니다.'); }
             }).catch(err => {console.log(err)})
         }
 
-        // function onSignup(){} --> 변수형 익명함수 전환
-        // function onSignup(){} --> const 변수 = () => { }
 
-        // 1. 회원가입
         const onSignup = () => {
-            console.log("onSign 확인")
-
-            let checkTxt = document.querySelector(".checkIdtxt").innerHTML;
+            console.log("onSignup 확인")
 
             let info = {
                 memail : document.querySelector(".memail").value,
@@ -34,12 +24,12 @@ export default function Signup( props ){
                 mphone : document.querySelector(".mphone").value
             }
 
-          if(checkTxt == `O`){
+          if(memailMsg == '사용가능한 아이디입니다.'){
                 axios.post("http://localhost:8080/member/info", info)
                 .then(r => {
                     if(r.data == true){
                         alert('회원가입이 완료되었습니다.')
-                        window.location.href = "/login"; // window.location.href ="이동할경로";
+                        window.location.href = "/login";
                     }
                 }).catch(err => {console.log(err)})
             }else{
@@ -49,11 +39,11 @@ export default function Signup( props ){
              }
         }
 
+
     return (<>
-            <h3> 회원가입 페이지 </h3>
              <form>
-                아이디[이메일] : <input onKeyUp={checkId} type="text" name = "memail" className = "memail"/>
-                <span className = "checkIdtxt"></span><br/>
+                아이디[이메일] : <input onChange={checkId} type="text" name = "memail" className = "memail"/>
+                <span>  { memailMsg } </span> <br/>
                 비밀번호 : <input type="text" name = "mpassword" className = "mpassword"/><br/>
                 전화번호 : <input type="text" name = "mphone" className = "mphone"/><br/>
                 이름 : <input type="text" name = "mname" className = "mname"/><br/>
@@ -63,11 +53,11 @@ export default function Signup( props ){
 }
 
 /*
-    HTML ---> JSX
-        1. <> </>
-        2. class -> className
-        3. style -> style={{ }}
-        4. 카멜표기법 :
-            onclick -> onClick
-            margin-top -> marginTop
+   HTML ---> JSX
+       1. <> </>
+       2. class -> className
+       3. style -> style={{}}
+       4. 카멜표기법
+        onclick (x) -> onClick(o)
+        margin-top(x) -> marginTop(o)
 */

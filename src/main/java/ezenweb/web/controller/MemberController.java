@@ -92,7 +92,7 @@ public class MemberController {
 
     // 7. 아이디 중복 검사
     @GetMapping("/find")
-    public boolean findId(@RequestParam String memail){
+    public boolean checkId(@RequestParam String memail){
         log.info("memail 값 : " + memail);
         boolean result = memberService.checkId(memail);
         return result;

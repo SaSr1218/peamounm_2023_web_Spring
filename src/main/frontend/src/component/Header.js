@@ -36,11 +36,13 @@ export default function Header(props){
     return(<>
         <div>
             <a href = "/" > Home  </a>
+            <a href="/board/list/"> 게시판 </a>
+
             <div className = "etcDiv"></div>
             { login == null ?
                 ( <>
-                    <a href = "/login" > login</a>
-                    <a href = "/signup" > signup</a>
+                    <a href = "/member/login" > login</a>
+                    <a href = "/member/signup" > signup</a>
                  </>)
                  : (<>
                     <button onClick = {loginOut}>로그아웃</button>

@@ -2,6 +2,9 @@ import React from 'react';
 import { BrowserRouter , Routes , Route } from "react-router-dom" // npm install react-router-dom
 import Login from "./member/Login"
 import Signup from "./member/Signup"
+import Find from "./member/Find"
+
+import List from "./board/List"
 
 import Header from "./Header"
 import Footer from "./Footer"
@@ -27,8 +30,10 @@ export default function Index( props ){
 
             <Routes>
                 <Route path="/" element= { <Main/> } />
-                <Route path="/login" element= { <Login/> } />
-                <Route path="/signup" element= { <Signup/> } />
+                <Route path="/member/login" element= { <Login/> } />
+                <Route path="/member/signup" element= { <Signup/> } />
+                <Route path="/member/find" element= { <Find/> } />
+                <Route path="/board/list" element= { <List/> } />
             </Routes>
 
             <Footer />
