@@ -47,8 +47,8 @@ public interface MemberEntityRepository extends JpaRepository< MemberEntity , In
 
     ---------------- 그외 추가 메소드 만들기 --------------
     검색[ 레코드 반환 ]
-        -> .findBy필드명( 인수 )      select * from login.css where memail = ?;
-        -> .findBy필드명And필드명     select * from login.css where meamil = ? and mpassword = ?;
+        -> .findBy필드명( 인수 )      select * from member where memail = ?;
+        -> .findBy필드명And필드명     select * from member where meamil = ? and mpassword = ?;
         -> .findBy필드명or필드명
     검색여부 [ true , false ]
         .existsBy필드명( 인수 )

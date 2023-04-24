@@ -18,15 +18,15 @@ public class MemberController {
 
     // 서버 사이드 라이팅 : 클라이언트가 서버에게 html 요청하는 방식 [ 리액트 통합 개발일경우 사용 XXX ]
 /*    @GetMapping("/signup")
-    public Resource getSignup(){ return new ClassPathResource("templates/login.css/signup.html");}
+    public Resource getSignup(){ return new ClassPathResource("templates/member/signup.html");}
     @GetMapping("/login")
-    public Resource getLogin(){ return new ClassPathResource("templates/login.css/login.html");}
+    public Resource getLogin(){ return new ClassPathResource("templates/member/login.html");}
     @GetMapping("/findid")
-    public Resource findId(){ return new ClassPathResource("templates/login.css/findid.html");}
+    public Resource findId(){ return new ClassPathResource("templates/member/findid.html");}
     @GetMapping("/findpassword")
-    public Resource findPassword(){ return new ClassPathResource("templates/login.css/findpassword.html");}
+    public Resource findPassword(){ return new ClassPathResource("templates/member/findpassword.html");}
     @GetMapping("/update")
-    public Resource getUpdate(){ return new ClassPathResource("templates/login.css/update.html");}*/
+    public Resource getUpdate(){ return new ClassPathResource("templates/member/update.html");}*/
 
 
 
@@ -55,7 +55,7 @@ public class MemberController {
     // 3. [U]회원정보 수정
     @PutMapping("/info")
     public boolean update( @RequestBody MemberDto memberDto ) {
-        log.info("login.css info write : " + memberDto );
+        log.info("member info write : " + memberDto );
         MemberDto dto = memberService.info();
         memberDto.setMno( dto.getMno() );
         boolean result = memberService.update( memberDto );

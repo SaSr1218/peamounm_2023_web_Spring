@@ -42,12 +42,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http
                 // 권한에 따른 HTTP GET 요청 제한
                 .authorizeHttpRequests() // HTTP 인증 요청
-                    .antMatchers("/login.css/info/mypage") // 인증시에만 사용할 URL
+                    .antMatchers("/member/info/mypage") // 인증시에만 사용할 URL
                         .hasRole("user") // 위 URL 패턴에 요청할 수 있는 권한명
                     .antMatchers("/admin/**")// ~~ 이하 페이지는 admin만 가능
                         .hasRole("admin")
-                    .antMatchers("/board/write") // 게시판 쓰기는 회원만 가능
-                        .hasRole("user")
+                    //.antMatchers("/board/write") // 게시판 쓰기는 회원만 가능
+                    //    .hasRole("user")
                 .antMatchers("/**") // localhost:8080 ~ 이하 페이지는 권한 해제
                     .permitAll() // 권한 해제
                         // 토큰 ( ROLE_user ) : ROLE_ 제외한 권한명 작성

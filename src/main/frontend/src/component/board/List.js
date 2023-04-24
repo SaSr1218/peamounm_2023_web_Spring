@@ -12,6 +12,9 @@ import Paper from '@mui/material/Paper';
 import Container from '@mui/material/Container';
 import CategoryList from './CategoryList';
 
+// -------- Button mui -------- //
+import Button from '@mui/material/Button';
+
 export default function List( props ) {
     // 1. 요청한 게시물 정보를 가지고 있는 리스트 변수[ 상태 관리변수 ]
     let [ rows , setRows ] = useState( [] )
@@ -32,7 +35,13 @@ export default function List( props ) {
 
     return (
     <Container>
-        <CategoryList categoryChange = { categoryChange } />
+
+
+        <div style={{ display:'flex' , justifyContent : 'space-between' , alignItems : 'center' }}>
+            <CategoryList categoryChange = { categoryChange } />
+            <a href="/board/write"><Button variant="outlined"> 게시물 작성 </Button></a>
+        </div>
+
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 650 }} aria-label="simple table">
             <TableHead>
