@@ -17,8 +17,12 @@ public interface MemberEntityRepository extends JpaRepository< MemberEntity , In
         // sql : select * from login.css where meamil = ? and mpassword = ?;
     Optional<MemberEntity> findByMemailAndMpassword(String memail , String mpassword);
 
-    // 3. [ 중복체크 활용 ] 만약에 동일한 이메일이 존재하면 true , 아니면 false
+    // 3.1 [ 중복체크 활용 ] 만약에 동일한 이메일이 존재하면 true , 아니면 false
     boolean existsByMemail(String memail);
+
+    // 3.2  [ 중복체크 활용 ] 핸드폰 중복체크
+    boolean existsByMphone(String mphone);
+
     // 4. [ 로그인 활용]  만약에 동일한 이메일과 비밀번호가 존재하면 true, 아니면 false
     boolean existsByMemailAndMpassword( String memail , String mpassword );
 
@@ -28,6 +32,7 @@ public interface MemberEntityRepository extends JpaRepository< MemberEntity , In
 
     // 6. 비밀번호 찾기 [ 아이디, 전화번호 ] ( memail , mphone )
     boolean existsByMemailAndMphone ( String memail , String mphone);
+
 
 
 

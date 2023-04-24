@@ -98,6 +98,13 @@ public class MemberController {
         return result;
     }
 
+    // 8. 핸드폰 중복 검사
+    @GetMapping("/check")
+    public boolean checkPhone(@RequestParam String mphone){
+        log.info("mphone 값 : " + mphone);
+        boolean result = memberService.checkPhone(mphone);
+        return result;
+    }
 
     // ----------- 스프링 시큐리티 적용될 경우 아래코드 사용 X  ----------- //
 

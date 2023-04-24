@@ -234,6 +234,13 @@ public class MemberService implements UserDetailsService , OAuth2UserService<OAu
         return !result;
     }
 
+    // 8. 핸드폰중복검사
+    public boolean checkPhone(String mphone){
+        boolean result = memberEntityRepository.existsByMphone(mphone);
+        return !result;
+
+    }
+
     // 1. [ 스프링 시큐리티 적용했을때 사용되는 로그인 메소드 ]
     @Override
     public UserDetails loadUserByUsername(String memail) throws UsernameNotFoundException {
