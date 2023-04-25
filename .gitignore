@@ -2,3 +2,6 @@
 /.gradle/
 /build/
 /build/classes/java/main/
+
+# 직접한 제외할 파일/폴더
+/src/main/resources/static/static/
