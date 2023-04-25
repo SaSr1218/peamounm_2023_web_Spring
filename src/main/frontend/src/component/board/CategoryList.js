@@ -17,7 +17,6 @@ export default function CategoryList( props ) {
 
     // 2. 선택된 카테고리
     const [category, setCategory] = useState(0);
-
       const handleChange = (event) => {
         setCategory(event.target.value);
         props.categoryChange( event.target.value )

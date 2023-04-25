@@ -80,14 +80,14 @@ public class BoardService {
             // import org.springframework.data.domain.Pageable;
         Pageable pageable = PageRequest.of( page-1 , 5 , Sort.by(Sort.Direction.DESC, "bno") );
         // PageRqeust.of( 페이지번호[0부터 시작] , 페이지당표시개수 , Sort.by(Sort.Direction.ASC/DESC , '정렬기준필드명' ) );
-        Page<BoardEntity> entityPage = boardEntityRepository.findAll( pageable );
+        Page<BoardEntity> entityPage = boardEntityRepository.findBySearch( cno , pageable );
         //
         List<BoardDto> boardDtoList = new ArrayList<>();
         entityPage.forEach( (b) -> {
             boardDtoList.add( b.toDto() );
         });
-        log.info("총 게시물수 : " + entityPage.getTotalElements() );
-        log.info("총 페이지수 : " + entityPage.getTotalPages() );
+        // log.info("총 게시물수 : " + entityPage.getTotalElements() );
+        // log.info("총 페이지수 : " + entityPage.getTotalPages() );
 
         return PageDto.builder()
                 .boardDtoList( boardDtoList )
