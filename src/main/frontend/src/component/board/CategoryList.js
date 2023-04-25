@@ -11,7 +11,7 @@ export default function CategoryList( props ) {
     // 1. 카테고리 리스트
     let [ list , setList ] = useState( [ ] );
     useEffect( ()=>{
-        axios.get('http://localhost:8080/board/category/list')
+        axios.get('/board/category/list')
             .then( r => { setList(r.data ); });
     },[]) // 1번 실행을 위함
 

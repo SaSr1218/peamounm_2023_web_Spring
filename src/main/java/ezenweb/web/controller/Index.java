@@ -8,9 +8,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class Index {
 
+/*
     @GetMapping("/")
     public Resource getIndex(){
         return new ClassPathResource("templates/index.html");
     }
+*/
 
 }

@@ -39,7 +39,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override // 재정의 [ 코드 바꾸기 ]
     protected void configure(HttpSecurity http) throws Exception{
         //super.configure(http); // super : 부모 클래스 호출
-        http
+        http/*
                 // 권한에 따른 HTTP GET 요청 제한
                 .authorizeHttpRequests() // HTTP 인증 요청
                     .antMatchers("/member/info/mypage") // 인증시에만 사용할 URL
@@ -62,7 +62,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         .ignoringAntMatchers("/board/write")
                         .ignoringAntMatchers("/board/click")
                         .ignoringAntMatchers("/todo")
-                .and() // 기능 추가할 때 사용되는 메소드
+                .and()*/ // 기능 추가할 때 사용되는 메소드
                     .formLogin()
                         .loginPage("/member/login")               // 로그인페이지로 사용할 URL
                         .loginProcessingUrl("/member/login")      // 로그인 처리할 매핑 URL
@@ -87,12 +87,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         .userService(memberService); // oauth2 서비스를 처리할 서비스 구현
 
         http.cors(); // CORS 정책 사용하기 위함!! configure 끝나고 아래 작성
+        http.csrf().disable(); // csrf 사용 해제
 
     } // configure end
 
     // import org.springframework.web.cors.CorsConfigurationSource;
     // 스프링 시큐리티에 CORS 정책 설정 [ 리액트(3000)의 요청 받기 위함 ]
-    @Bean // 빈 등록
+/*    @Bean // 빈 등록
     CorsConfigurationSource corsConfigurationSource(){
         CorsConfiguration corsConfiguration = new CorsConfiguration();
         corsConfiguration.setAllowedOrigins(Arrays.asList("http://localhost:3000"));    // 주소
@@ -102,7 +103,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**" , corsConfiguration);
         return  source;
-    }
+    }*/
 
 
 } // SecurityConfiguration class end

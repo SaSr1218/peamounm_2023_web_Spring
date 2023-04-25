@@ -14,7 +14,7 @@ export default function Find( props ){
             mname : document.querySelector(".mname").value,
             mphone : document.querySelector(".mphone").value
         }
-        axios.post("http://localhost:8080/member/find", info)
+        axios.post("/member/find", info)
         .then(r => { console.log(r);
             if(r.data != ''){ setFindId(r.data)}
         })
@@ -26,7 +26,7 @@ export default function Find( props ){
             memail : document.querySelector(".memail").value,
             mphone : document.querySelector(".mphone").value
         }
-        axios.put("http://localhost:8080/member/find", info)
+        axios.put("/member/find", info)
         .then(r => { console.log(r);
             if ( r.data != '') { setFindPwd(r.data) }
         })

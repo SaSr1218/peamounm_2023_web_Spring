@@ -9,7 +9,7 @@ export default function Header(props){
         sessionStorage.setItem('login_token', null);
 
         //백엔드의 인증세션 지우기
-        axios.get('http://localhost:8080/member/logout').then(r => {console.log(r)})
+        axios.get('/member/logout').then(r => {console.log(r)})
 
         window.location.href ="/login"
     }
@@ -17,7 +17,7 @@ export default function Header(props){
     const accountDelete = () => {
        let mpassword = document.querySelector(".mpassword").value;
 
-        axios.delete('http://localhost:8080/member/info', {params : {"mpassword" : mpassword}})
+        axios.delete('/member/info', {params : {"mpassword" : mpassword}})
         .then(r => {
             if(r.data == true){
                 alert('계정 삭제 성공되었습니다.');

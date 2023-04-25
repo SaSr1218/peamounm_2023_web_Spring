@@ -10,10 +10,11 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+// @CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @Slf4j
 @RequestMapping("/member")
-@CrossOrigin(origins = "http://localhost:3000")
+
 public class MemberController {
 
     // 서버 사이드 라이팅 : 클라이언트가 서버에게 html 요청하는 방식 [ 리액트 통합 개발일경우 사용 XXX ]

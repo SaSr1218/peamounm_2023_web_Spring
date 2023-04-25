@@ -14,10 +14,12 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
 
+
+// @CrossOrigin( origins = "http://localhost:3000")
 @RestController
 @Slf4j
 @RequestMapping("/board")
-@CrossOrigin( origins = "http://localhost:3000")
+
 public class BoardController {
 
     // -------------------- 서비스 객체들 ------------------- //
@@ -25,10 +27,12 @@ public class BoardController {
 
 
     // ------------------- view 반환 ------------------- //
+/*
     @GetMapping("")
     public Resource index(){
         return new ClassPathResource("templates/board/list.html");
     }
+*/
 
 
 

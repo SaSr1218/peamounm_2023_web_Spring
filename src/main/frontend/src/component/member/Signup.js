@@ -7,7 +7,7 @@ export default function Signup(props){
         let [ mphoneMsg , setMphoneMsg ] = useState('');
 
         const checkId = (e) => {
-            axios.get("http://localhost:8080/member/find", {params : {memail : e.target.value}})
+            axios.get("/member/find", {params : {memail : e.target.value}})
                 .then(r => {
                     if(r.data == false){  setMemailMsg('중복된 아이디입니다.');  }
                     else{ setMemailMsg('사용가능한 아이디입니다.'); }
@@ -15,7 +15,7 @@ export default function Signup(props){
         }
 
         const checkPhone = (e) => {
-            axios.get("http://localhost:8080/member/check" , {params : {mphone : e.target.value}})
+            axios.get("/member/check" , {params : {mphone : e.target.value}})
                 .then(r => {
                     if(r.data == false){  setMphoneMsg('중복된 전화번호입니다.');  }
                     else{ setMphoneMsg('사용가능한 전화번호입니다.'); }
@@ -33,11 +33,11 @@ export default function Signup(props){
             }
 
           if(memailMsg == '사용가능한 아이디입니다.' && mphoneMsg == '사용가능한 전화번호입니다.'){
-                axios.post("http://localhost:8080/member/info", info)
+                axios.post("/member/info", info)
                 .then(r => {
                     if(r.data == true){
                         alert('회원가입이 완료되었습니다.')
-                        window.location.href = "/login";
+                        window.location.href = "/member/login";
                     }
                 }).catch(err => {console.log(err)})
             }else{
