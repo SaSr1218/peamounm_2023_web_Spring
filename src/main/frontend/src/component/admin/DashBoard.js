@@ -15,7 +15,6 @@ export default function DashBoard( props ) {
       });
   };
 
-
     return(<>
                 <h3> 관리자 페이지 </h3>
                 <h6> 게시판 카테고리 추가 </h6>

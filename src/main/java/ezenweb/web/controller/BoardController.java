@@ -4,6 +4,7 @@ package ezenweb.web.controller;
 import ezenweb.example.day06_객체관계.Board;
 import ezenweb.web.domain.board.BoardDto;
 import ezenweb.web.domain.board.CategoryDto;
+import ezenweb.web.domain.board.PageDto;
 import ezenweb.web.service.BoardService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,17 +55,18 @@ public class BoardController {
     }
 
     // 3. 게시물 쓰기 // body { "btitle" : "입력한제목" , "bcontent" : "입력한내용" , "cno" : "선택한cno" }
-    @PostMapping("/write")
+    @PostMapping("")
     public byte write( @RequestBody BoardDto boardDto ){
         log.info("board dto : " + boardDto);
         byte result = boardService.write( boardDto );
         return result;
     }
 
-    // 4. 카테고리별 게시물 출력
-    @GetMapping("/list")
-    public List<BoardDto> list(@RequestParam int cno){ log.info("c list cno : " + cno);
-        List<BoardDto> result = boardService.list( cno );
+    // 4. 카테고리별 게시물 전체 출력
+    @GetMapping("")
+    public PageDto list(@RequestParam int cno , @RequestParam int page){
+        log.info("c list cno : " + cno + page);
+        PageDto result = boardService.list( cno , page );
         return result;
     }
 
@@ -90,5 +92,11 @@ public class BoardController {
         return result;
     }
 
+    // 8. 개별 게시물 수정 [ 진행중 ]
+    @PutMapping("")
+    public boolean boardUpdate(@RequestBody BoardDto boardDto ) {
+        boolean result = boardService.boardUpdate(boardDto.getBno() );
+        return result;
+    }
 
 }

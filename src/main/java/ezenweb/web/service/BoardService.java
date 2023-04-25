@@ -6,6 +6,10 @@ import ezenweb.web.domain.member.MemberEntity;
 import ezenweb.web.domain.member.MemberEntityRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -71,23 +75,26 @@ public class BoardService {
 
     // 4. 카테고리별 게시물 출력
     @Transactional
-    public List<BoardDto> list(int cno){ log.info("s list cno : " + cno);
-        List<BoardDto> list = new ArrayList<>();
-        if ( cno == 0 ) { // 전체 보기
-            List<BoardEntity> boardEntityList = boardEntityRepository.findAll(); // 모든 카테고리 정보 전체 출력
+    public PageDto list(int cno , int page){
+        // 1. pageable 인터페이스 [ 페이징처리 관련 api ]
+            // import org.springframework.data.domain.Pageable;
+        Pageable pageable = PageRequest.of( page-1 , 5 , Sort.by(Sort.Direction.DESC, "bno") );
+        // PageRqeust.of( 페이지번호[0부터 시작] , 페이지당표시개수 , Sort.by(Sort.Direction.ASC/DESC , '정렬기준필드명' ) );
+        Page<BoardEntity> entityPage = boardEntityRepository.findAll( pageable );
+        //
+        List<BoardDto> boardDtoList = new ArrayList<>();
+        entityPage.forEach( (b) -> {
+            boardDtoList.add( b.toDto() );
+        });
+        log.info("총 게시물수 : " + entityPage.getTotalElements() );
+        log.info("총 페이지수 : " + entityPage.getTotalPages() );
 
-            boardEntityList.forEach( (e) -> { // 엔티티[레코드] 하나씩 반복문
-                list.add(e.toDto()); // 엔티티[레코드] 하나씩 dto 변환 후 리스트 담기
-            });
-        } else { // 카테고리별 출력
-            Optional<CategoryEntity> categoryEntityOptional = categoryRepository.findById( cno ); // 해당 cno의 카테고리 정보 전체 출력
-            if ( categoryEntityOptional.isPresent() ){
-                categoryEntityOptional.get().getBoardEntityList().forEach( (e)->{
-                    list.add( e.toDto() );
-                });
-            }
-        }
-        return list;
+        return PageDto.builder()
+                .boardDtoList( boardDtoList )
+                .totalCount(entityPage.getTotalElements() )
+                .totalPage(entityPage.getTotalPages())
+                .cno( cno ).page( page )
+                .build();
     }
 
     // 5. 내가 쓴 게시물 출력
@@ -126,6 +133,22 @@ public class BoardService {
             }
         }
         return 1; //해당 게시물이 이미 삭제되거나 없을 경우
+    }
+
+    // 8. 개별 게시물 수정 [ 진행중 ]
+    @Transactional
+    public boolean boardUpdate( int bno ){
+        MemberDto memberDto = (MemberDto)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        Optional<BoardEntity> optionalBoard = boardEntityRepository.findById(bno);
+        if ( optionalBoard.isPresent()){
+            BoardEntity entity = optionalBoard.get();
+
+            entity.setBtitle(entity.getBtitle());
+            entity.setBcontent(entity.getBcontent());
+            return true;
+        }
+        return false;
     }
 
 }

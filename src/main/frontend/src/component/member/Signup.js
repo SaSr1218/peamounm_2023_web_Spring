@@ -7,7 +7,7 @@ export default function Signup(props){
         let [ mphoneMsg , setMphoneMsg ] = useState('');
 
         const checkId = (e) => {
-            axios.get("/member/find", {params : {memail : e.target.value}})
+            axios.get("/member/idcheck", {params : {memail : e.target.value}})
                 .then(r => {
                     if(r.data == false){  setMemailMsg('중복된 아이디입니다.');  }
                     else{ setMemailMsg('사용가능한 아이디입니다.'); }
@@ -15,7 +15,7 @@ export default function Signup(props){
         }
 
         const checkPhone = (e) => {
-            axios.get("/member/check" , {params : {mphone : e.target.value}})
+            axios.get("/member/phonecheck" , {params : {mphone : e.target.value}})
                 .then(r => {
                     if(r.data == false){  setMphoneMsg('중복된 전화번호입니다.');  }
                     else{ setMphoneMsg('사용가능한 전화번호입니다.'); }

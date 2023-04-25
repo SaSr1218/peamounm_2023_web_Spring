@@ -4,7 +4,7 @@ import styles from '../../css/member/login.css';
 
 export default function Login( props ){
 
-    //로그인
+    // 일반 회원 로그인
     const onLogin = (e) =>{ console.log("onLogin 실행")
 
         let loginform = document.querySelectorAll(".loginForm")[0];
@@ -13,7 +13,7 @@ export default function Login( props ){
             axios에서 form 전송
             login은 스프링 시큐리티가 처리한다.
         */
-        axios.post("http://localhost:8080/member/login", loginFormData)
+        axios.post("/member/login", loginFormData)
         .then(r => {
             if(r.data == false){
                 alert('동일한 회원정보가 없습니다.')
@@ -31,7 +31,6 @@ export default function Login( props ){
                //localStorage.setItem("login_token", JSON.stringify(r.data)); //JS 로컬 스토리지에 로그인 성공한 흔적 남기기
 
                 //JS 세션 스토리지[ 브라우저 모두 닫히면 사라진다. 다른 도메인과 같이 저장된다. ]
-                sessionStorage.setItem("login_token", JSON.stringify(r.data));
 
                window.location.href = "/"; //location하면 r.data(로그인한 정보)사라짐 => Login 함수안에 있으니까 지역변수
             }
@@ -45,9 +44,9 @@ export default function Login( props ){
                 비밀번호 : <input type="text" name = "mpassword" className = "mpassword"/><br/>
                 <button onClick = {onLogin} type = "button">로그인</button>
                 <a href = "/member/find"> 계정 정보 찾기 </a>
-                <a href = "http://localhost:8080/oauth2/authorization/google">구글로그인</a>
-                <a href = "http://localhost:8080/oauth2/authorization/kakao">카카오로그인</a>
-                <a href = "http://localhost:8080/oauth2/authorization/naver">네이버로그인</a>
+                <a href = "/oauth2/authorization/google">구글로그인</a>
+                <a href = "/oauth2/authorization/kakao">카카오로그인</a>
+                <a href = "/oauth2/authorization/naver">네이버로그인</a>
             </form>
     </>)
 }

@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @Slf4j
 @RequestMapping("/member")
-
 public class MemberController {
 
     // 서버 사이드 라이팅 : 클라이언트가 서버에게 html 요청하는 방식 [ 리액트 통합 개발일경우 사용 XXX ]
@@ -78,21 +77,21 @@ public class MemberController {
 
     }
     // 5. 아이디 찾기
-    @PostMapping("/find")
+    @PostMapping("/findid")
     public String findId(@RequestBody MemberDto memberDto ){
         String result = memberService.findId( memberDto );
         return result;
     }
 
     // 6. 비밀번호 찾기
-    @PutMapping("/find")
+    @PutMapping("/findpwd")
     public String findPassword(@RequestBody MemberDto memberDto ){
         String result = memberService.findPassword( memberDto );
         return result;
     }
 
     // 7. 아이디 중복 검사
-    @GetMapping("/find")
+    @GetMapping("/idcheck")
     public boolean checkId(@RequestParam String memail){
         log.info("memail 값 : " + memail);
         boolean result = memberService.checkId(memail);
@@ -100,7 +99,7 @@ public class MemberController {
     }
 
     // 8. 핸드폰 중복 검사
-    @GetMapping("/check")
+    @GetMapping("/phonecheck")
     public boolean checkPhone(@RequestParam String mphone){
         log.info("mphone 값 : " + mphone);
         boolean result = memberService.checkPhone(mphone);
