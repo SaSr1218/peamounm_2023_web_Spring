@@ -64,9 +64,8 @@ public class BoardController {
 
     // 4. 카테고리별 게시물 전체 출력
     @GetMapping("")
-    public PageDto list(@RequestParam int cno , @RequestParam int page){
-        log.info("c list cno : " + cno + page);
-        PageDto result = boardService.list( cno , page );
+    public PageDto list( PageDto pageDto ){
+        PageDto result = boardService.list( pageDto );
         return result;
     }
 

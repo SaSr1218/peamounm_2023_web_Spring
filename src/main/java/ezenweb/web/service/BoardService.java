@@ -75,26 +75,25 @@ public class BoardService {
 
     // 4. 카테고리별 게시물 출력
     @Transactional
-    public PageDto list(int cno , int page){
+    public PageDto list(PageDto pageDto){
         // 1. pageable 인터페이스 [ 페이징처리 관련 api ]
             // import org.springframework.data.domain.Pageable;
-        Pageable pageable = PageRequest.of( page-1 , 5 , Sort.by(Sort.Direction.DESC, "bno") );
+        Pageable pageable = PageRequest.of(pageDto.getPage()-1 , 5 , Sort.by(Sort.Direction.DESC, "bno") );
         // PageRqeust.of( 페이지번호[0부터 시작] , 페이지당표시개수 , Sort.by(Sort.Direction.ASC/DESC , '정렬기준필드명' ) );
-        Page<BoardEntity> entityPage = boardEntityRepository.findBySearch( cno , pageable );
+        Page<BoardEntity> entityPage = boardEntityRepository.findBySearch(
+                pageDto.getCno(), pageDto.getKey() , pageDto.getKeyword() , pageable );
         //
         List<BoardDto> boardDtoList = new ArrayList<>();
-        entityPage.forEach( (b) -> {
-            boardDtoList.add( b.toDto() );
-        });
+        entityPage.forEach( (b) -> {  boardDtoList.add( b.toDto() ); });
+        pageDto.setBoardDtoList( boardDtoList );
+        pageDto.setTotalPage(entityPage.getTotalPages());
+        pageDto.setTotalCount(entityPage.getTotalElements() );
+        return pageDto;
+
         // log.info("총 게시물수 : " + entityPage.getTotalElements() );
         // log.info("총 페이지수 : " + entityPage.getTotalPages() );
 
-        return PageDto.builder()
-                .boardDtoList( boardDtoList )
-                .totalCount(entityPage.getTotalElements() )
-                .totalPage(entityPage.getTotalPages())
-                .cno( cno ).page( page )
-                .build();
+
     }
 
     // 5. 내가 쓴 게시물 출력
