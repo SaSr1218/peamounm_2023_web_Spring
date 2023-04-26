@@ -78,16 +78,16 @@ public class BoardController {
     }
 
     // 6. 개별 게시물 출력
-    @GetMapping("/click")
-    public BoardDto boardclick(@RequestParam int bno){ log.info("boardclick bno : " + bno);
+    @GetMapping("/getboard")
+    public BoardDto getboard(@RequestParam int bno){ log.info("boardclick bno : " + bno);
         BoardDto result = boardService.boardclick( bno );
         return result;
     }
 
     // 7. 개별 게시물 삭제
-    @DeleteMapping("/click")
-    public int boardDelete(@RequestParam int bno){ log.info("deleteBoard bno : " + bno);
-        int result = boardService.boardDelete(bno);
+    @DeleteMapping("")
+    public boolean delete( @RequestParam int bno  ){
+        boolean result = boardService.delete( bno );
         return result;
     }
 

@@ -89,7 +89,7 @@ public class MemberService implements UserDetailsService , OAuth2UserService<OAu
         }else{ // 두번째 방문 이상 수정 처리
             entity.get().setMname( name );
         }
-
+        memberDto.setMno( entity.get().getMno() );
         return memberDto;
     }
 

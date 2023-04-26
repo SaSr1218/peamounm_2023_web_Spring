@@ -119,19 +119,13 @@ public class BoardService {
 
     // 7. 개별 게시물 삭제
     @Transactional
-    public int boardDelete( int bno ){
-        MemberDto memberDto = (MemberDto)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-        Optional<BoardEntity> optionalBoard = boardEntityRepository.findById(bno);
-        if(optionalBoard.isPresent()){
-            if(memberDto.getMemail().equals(optionalBoard.get().getMemberEntity().getMemail())){
-                boardEntityRepository.delete(optionalBoard.get());
-                return 0;
-            }else{
-                return 2; // 자신의 게시물이 아닐 경우
-            }
+    public boolean delete( int bno  ){
+        Optional<BoardEntity> optionalBoardEntity = boardEntityRepository.findById( bno );
+        if( optionalBoardEntity.isPresent() ){
+            boardEntityRepository.delete( optionalBoardEntity.get() );
+            return true;
         }
-        return 1; //해당 게시물이 이미 삭제되거나 없을 경우
+        return false;
     }
 
     // 8. 개별 게시물 수정 [ 진행중 ]
