@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 import java.util.*;
@@ -93,7 +94,6 @@ public class BoardService {
         // log.info("총 게시물수 : " + entityPage.getTotalElements() );
         // log.info("총 페이지수 : " + entityPage.getTotalPages() );
 
-
     }
 
     // 5. 내가 쓴 게시물 출력
@@ -111,10 +111,23 @@ public class BoardService {
         return list;
     }
 
-    // 6. 개별 게시물 출력
+    // 6. 개별 게시물 출력( + 댓글 출력 )
     @Transactional
-    public BoardDto boardclick( int bno ){ log.info("s list bno : " + bno);
-        return boardEntityRepository.findById(bno).get().toDto();
+    public BoardDto getboard( int bno ){ log.info("s list bno : " + bno);
+        Optional<BoardEntity> optionalBoardEntity =  boardEntityRepository.findById(bno);
+        if (optionalBoardEntity.isPresent() ) {
+            BoardEntity boardEntity = optionalBoardEntity.get();
+
+            // 댓글 같이 ~~ 형변환 [ toDto vs 서비스 ]
+            List<ReplyDto> list = new ArrayList<>();
+            boardEntity.getReplyEntityList().forEach( (r) -> {
+                list.add( r.toDto() );
+            });
+            BoardDto boardDto = boardEntity.toDto();
+            boardDto.setReplyDtoList( list );
+            return boardDto;
+        }
+        return null;
     }
 
     // 7. 개별 게시물 삭제
@@ -142,6 +155,58 @@ public class BoardService {
             return true;
         }
         return false;
+    }
+
+    // ---------------------------- 댓글 쪽 ------------------------ //
+
+    @Autowired
+    private ReplyEntityRepository replyEntityRepository;
+    @Transactional
+    public boolean postReply ( ReplyDto replyDto ){
+        // -1. 로그인 했는지 회원정보 호출 [ 댓글 작성자 ]
+        Object o = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if ( o.equals("anonymousUser")) { return false; }
+        MemberDto memberDto = (MemberDto)o;
+        MemberEntity memberEntity = memberEntityRepository.findById( memberDto.getMno() ).get();
+
+        // 0. 댓글 작성할 게시물 호출
+        Optional<BoardEntity> optionalBoardEntity = boardEntityRepository.findById( replyDto.getBno() );
+        if ( !optionalBoardEntity.isPresent() ) { return false; }
+        BoardEntity boardEntity = optionalBoardEntity.get();
+
+        // 1. 댓글 작성
+        ReplyEntity replyEntity = replyEntityRepository.save( replyDto.toEntity() );
+        if( replyEntity.getRno() < 1 ) { return false; }
+
+        // 2. 댓글과 회원이 양방향 관계 [ 댓글 -> 회원 and 회원 -> 댓글 = 양방향! ]
+        replyEntity.setMemberEntity( memberEntity );
+        memberEntity.getReplyEntityList().add( replyEntity );
+
+        // 3. 댓글과 게시물의 양방향 관계 [ 댓글 -> 게시물 and 게시물 -> 댓글 ]
+        replyEntity.setBoardEntity( boardEntity );
+        boardEntity.getReplyEntityList().add( replyEntity );
+        return true;
+    }
+
+    public boolean getReply() {
+        return true;
+    }
+    // 11. 댓글 수정 [ U ]
+    public boolean putReply(ReplyDto replyDto) {
+        Optional< ReplyEntity > optionalReplyEntity = replyEntityRepository.findById( replyDto.getRno() );
+        if (optionalReplyEntity.isPresent() ){
+            optionalReplyEntity.get().setRcontent( replyDto.getRcontent() );
+            return true;
+        }
+        return false;
+    }
+    // 12. 댓글 삭제 [ D ]
+    public boolean deleteReply( int rno) {
+        Optional< ReplyEntity > optionalReplyEntity = replyEntityRepository.findById( rno );
+        if ( optionalReplyEntity.isPresent() ){
+            replyEntityRepository.delete( optionalReplyEntity.get() );
+        }
+        return true;
     }
 
 }

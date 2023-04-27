@@ -37,7 +37,11 @@ export default function View( props ) {
 
    return ( <>
         <div>
-            <h3> 제목 </h3> <h3> 내용 </h3>  { btnBox }
+            <h3> 제목 </h3>
+
+            <h3> 내용 </h3>
+
+              { btnBox }
         </div>
    </>)
 }
