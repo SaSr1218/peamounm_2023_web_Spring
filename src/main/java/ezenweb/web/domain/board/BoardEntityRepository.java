@@ -4,22 +4,22 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 
 @Repository
 public interface BoardEntityRepository extends JpaRepository< BoardEntity , Integer> {
 
-
     @Query(
             value = "select * from board where if( :cno = 0 , cno like '%%' , cno = :cno ) and " +
                     " if( :key = '' , true , " +
                         "if( :key = 'btitle' , btitle like %:keyword% , bcontent like %:keyword% ) )"
             , nativeQuery = true ) // JPA 형식 X 순수 SQL 적용하는 함수 정의
-    Page<BoardEntity> findBySearch(int cno , String key , String keyword , Pageable pageable);
+    Page<BoardEntity> findBySearch(@Param( "cno" ) int cno , @Param("key") String key , @Param("keyword") String keyword , Pageable pageable);
 
     // 1. 동일한 cno 찾기
-        // select * from board where con = ?
+        // select * from board where cno = ?
     // 2. 동일한 필드에서 검색어[포함 like %%] 찾기
         // select * from board where btitle = ?
         // select * from board where bcontent = ?
