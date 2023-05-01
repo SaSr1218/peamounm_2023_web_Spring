@@ -132,30 +132,37 @@ public class BoardService {
 
     // 7. 개별 게시물 삭제
     @Transactional
-    public boolean delete( int bno  ){
+    public int delete( int bno  ){
+
         Optional<BoardEntity> optionalBoardEntity = boardEntityRepository.findById( bno );
         if( optionalBoardEntity.isPresent() ){
             boardEntityRepository.delete( optionalBoardEntity.get() );
-            return true;
+            return 0;
         }
-        return false;
+        return 1;
     }
 
     // 8. 개별 게시물 수정 [ 진행중 ]
     @Transactional
-    public boolean boardUpdate( int bno ){
-        MemberDto memberDto = (MemberDto)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    public boolean boardUpdate( BoardDto boardDto ){
+        // 게시물 bno 확인
+        Optional<BoardEntity> optionalBoardEntity = boardEntityRepository.findById(boardDto.getBno() );
+        // 카테고리 cno 확인
+        Optional<CategoryEntity> optionalCategoryEntity = categoryRepository.findById(boardDto.getCno());
 
-        Optional<BoardEntity> optionalBoard = boardEntityRepository.findById(bno);
-        if ( optionalBoard.isPresent()){
-            BoardEntity entity = optionalBoard.get();
+        if ( optionalBoardEntity.isPresent() && optionalCategoryEntity.isPresent() ){
+            BoardEntity entity = optionalBoardEntity.get();
 
-            entity.setBtitle(entity.getBtitle());
-            entity.setBcontent(entity.getBcontent());
+            entity.setBtitle(boardDto.getBtitle() );
+            entity.setBcontent(boardDto.getBcontent());
+
+            entity.setCategoryEntity(optionalCategoryEntity.get());
+
             return true;
         }
         return false;
     }
+
 
     // ---------------------------- 댓글 쪽 ------------------------ //
 
@@ -201,12 +208,15 @@ public class BoardService {
         return false;
     }
     // 12. 댓글 삭제 [ D ]
-    public boolean deleteReply( int rno) {
+    public boolean deleteReply( int rno ) {
         Optional< ReplyEntity > optionalReplyEntity = replyEntityRepository.findById( rno );
+
         if ( optionalReplyEntity.isPresent() ){
             replyEntityRepository.delete( optionalReplyEntity.get() );
+            return true;
         }
-        return true;
+        return false;
     }
+
 
 }

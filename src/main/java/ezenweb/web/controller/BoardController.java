@@ -27,16 +27,13 @@ public class BoardController {
     // -------------------- 서비스 객체들 ------------------- //
     @Autowired private BoardService boardService;
 
-
-    // ------------------- view 반환 ------------------- //
-/*
-    @GetMapping("")
-    public Resource index(){
-        return new ClassPathResource("templates/board/list.html");
-    }
-*/
-
-
+    // ------------------- view 반환 ------------------- // -> react 통합 후 사용 X
+        /*
+            @GetMapping("")
+            public Resource index(){
+                return new ClassPathResource("templates/board/list.html");
+            }
+        */
 
     // -------------------- model 반환 ------------------- //
     // 1. 카테고리 등록
@@ -75,7 +72,6 @@ public class BoardController {
     public List<BoardDto> myboards(){log.info("s myboards : ");
         List<BoardDto> result = boardService.myboards();
         return result;
-
     }
 
     // 6. 개별 게시물 출력
@@ -87,40 +83,44 @@ public class BoardController {
 
     // 7. 개별 게시물 삭제
     @DeleteMapping("")
-    public boolean delete( @RequestParam int bno  ){
-        boolean result = boardService.delete( bno );
+    public int delete( @RequestParam int bno  ){
+        int result = boardService.delete( bno );
         return result;
     }
 
-    // 8. 개별 게시물 수정 [ 진행중 ]
+    // 8. 개별 게시물 수정
     @PutMapping("")
-    public boolean boardUpdate(@RequestBody BoardDto boardDto ) {
-        boolean result = boardService.boardUpdate(boardDto.getBno() );
+    public boolean update(@RequestBody BoardDto boardDto ) {
+        boolean result = boardService.boardUpdate( boardDto );
         return result;
     }
 
     // 9. 댓글 작성 [ C ]
     @PostMapping("reply")
     public boolean postReply(@RequestBody ReplyDto replyDto){
-        boolean result = boardService.postReply( replyDto );
-        return true;
+        boolean result = boardService.postReply(replyDto);
+        return result;
     }
 
-    // 10. 댓글 출력 [ R ] -> 6번 함수랑 같이 출력!
-    @GetMapping("reply")
-    public boolean getReply() {
-        return true;
-    }
+    // 10. 댓글 출력 [ R ] -> 6번 함수랑 같이 출력! -> 할 필요 X
+    /*    @GetMapping("reply")
+        public boolean getReply() {
+            return true;
+        }*/
+
     // 11. 댓글 수정 [ U ]
     @PutMapping("reply")
     public boolean putReply(@RequestBody ReplyDto replyDto) {
         boolean result = boardService.putReply( replyDto );
         return result;
     }
+
     // 12. 댓글 삭제 [ D ]
     @DeleteMapping("reply")
     public boolean deleteReply(@RequestParam int rno) {
         boolean result = boardService.deleteReply( rno );
         return result;
     }
+
+
 }
