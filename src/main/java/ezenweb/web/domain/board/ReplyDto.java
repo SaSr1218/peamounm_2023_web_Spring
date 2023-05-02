@@ -29,7 +29,7 @@ public class ReplyDto {
     // @Builder.Default [ 1번 방법 ]
     // Entity에 .rereplyDtoList( new ArrayList<>() ) 따로 추가 [2번 방법]
     @Builder.Default // 빌더 이용한 객체 생성시 현재 필드 정보 기본값으로 사용
-    private List<ReplyDto> rereplyDtoSlist = new ArrayList<>();
+    private List<ReplyDto> rereplyDtoList = new ArrayList<>();
 
     // 저장용
     public ReplyEntity toEntity(){

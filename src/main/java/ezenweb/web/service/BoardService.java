@@ -127,7 +127,7 @@ public class BoardService {
                     boardEntity.getReplyEntityList().forEach( (r2) -> {
                         if(r.getRno() == r2.getRindex() ){
                             // 리스트길이-1 : 최근에 리스트에 등록한 인덱스 번호 = 마지막 인덱스
-                            list.get( list.size()-1 ).getRereplyDtoSlist().add(r2.toDto());
+                            list.get( list.size()-1 ).getRereplyDtoList().add(r2.toDto());
 
                         }
                     });
