@@ -42,9 +42,9 @@ export default function View( props ) {
 
    const [ login , setLogin ] = useState( JSON.parse( sessionStorage.getItem('login_token') ) )
 
-    // 2. 댓글 작성시 랜더링
-   const onReplyWrite = ( rcontent ) =>{
-           let info = {  rcontent : rcontent,  bno : board.bno };
+    // 5. 댓글 작성시 랜더링
+   const onReplyWrite = ( rcontent , rindex ) =>{
+           let info = {  rcontent : rcontent,  bno : board.bno , rindex : rindex };
            console.log( info );
             axios.post("/board/reply" , info )
                 .then( (r)=>{

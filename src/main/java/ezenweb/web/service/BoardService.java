@@ -118,11 +118,22 @@ public class BoardService {
         if (optionalBoardEntity.isPresent() ) {
             BoardEntity boardEntity = optionalBoardEntity.get();
 
-            // 댓글 같이 ~~ 형변환 [ toDto vs 서비스 ]
-            List<ReplyDto> list = new ArrayList<>();
+            // 상위 댓글
+            List<ReplyDto> list = new ArrayList<>(); // 상위 댓글 리스트
             boardEntity.getReplyEntityList().forEach( (r) -> {
-                list.add( r.toDto() );
+                if( r.getRindex() == 0 ){ // 상위 댓글 필터
+                    list.add( r.toDto() );
+                    // 하위 답글
+                    boardEntity.getReplyEntityList().forEach( (r2) -> {
+                        if(r.getRno() == r2.getRindex() ){
+                            // 리스트길이-1 : 최근에 리스트에 등록한 인덱스 번호 = 마지막 인덱스
+                            list.get( list.size()-1 ).getRereplyDtoSlist().add(r2.toDto());
+
+                        }
+                    });
+                }
             });
+
             BoardDto boardDto = boardEntity.toDto();
             boardDto.setReplyDtoList( list );
             return boardDto;

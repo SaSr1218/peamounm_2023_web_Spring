@@ -6,6 +6,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -17,12 +20,22 @@ public class ReplyDto {
     private String rcontent;
     private String rdate;
     private int bno;                // 댓글이 속해있는 게시물 번호
-    private MemberDto memberDto;    // 댓글 적은 memberDto
+    private int rindex;             // 부모 댓글번호
+
+    private int mno;
+    private String mname;
+
+    // 답글 리스트
+    // @Builder.Default [ 1번 방법 ]
+    // Entity에 .rereplyDtoList( new ArrayList<>() ) 따로 추가 [2번 방법]
+    @Builder.Default // 빌더 이용한 객체 생성시 현재 필드 정보 기본값으로 사용
+    private List<ReplyDto> rereplyDtoSlist = new ArrayList<>();
 
     // 저장용
     public ReplyEntity toEntity(){
         return ReplyEntity.builder()
                 .rcontent( this.rcontent )
+                .rindex( this.rindex )
                 .build();
     }
 }
