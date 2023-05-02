@@ -54,14 +54,14 @@ export default function ReplyList( props ) {
     }
 
     // 4. 수정 핸들러
-    const onUpdateHandler = ( e , rno , i) => {
+    const onUpdateHandler = ( e , rno , i ) => {
         // Rcontent 읽기모드 해제
-        if ( replyList[i].readOnly == true ){
-            replyList[i].readOnly = false; alert('수정 후 완료 버튼 눌러주세요.')
-        } else { // Rcontent 읽기모드 적용
+        if( replyList[i].readOnly == true){
+            replyList[i].readOnly = false;  alert('수정후 완료 버튼을 눌러주세요');
+        }else{  // Rcontent 읽기모드 적용
             replyList[i].readOnly = true;
             // 수정처리
-            alert('수정완료');
+            props.onReplyUpdate( rno ,  replyList[i].rcontent )
         }
         setReplyList([...replyList])
     }
@@ -73,28 +73,26 @@ export default function ReplyList( props ) {
     }
 
     return (<>
-        { /* 상위 댓글[ rindex=0 ] 작성하는 input */ }
-        <ReplyInput onReplyWrite = { props.onReplyWrite } rindex = {0} />
+        <ReplyInput  onReplyWrite = { props.onReplyWrite } rindex = {0}  /> { /* 상위 댓글[ rindex=0 ] 작성하는 input */ }
         <div className="replyCount"> 전체 댓글 : { replyList.length } 개 </div>
         {
-             replyList.map( (r , i)=>{
-                {/* rcontent 읽기모드 설정값 저장하는 필드 만들기 */}
-                if ( r.readOnly == undefined) { r.readOnly = true; }
+             replyList.map( (r , i )=>{
+                { /* rcontent 읽기모드 설정값 저장하는 [r.readOnly]필드 만들기 */}
+                if( r.readOnly == undefined ){ r.readOnly = true ; }
                 return(
                     <div className="replyBox">
-                        작성자 : <span className="replyMname"> { r.mname } </span>
+                        <span className="replyMname"> { r.mname } </span>
                         <span className="replyRdate"> { r.rdate } </span>
-                        <input value={ r.rcontent } className="replyRcontent" onChange={ (e) => onRcontentChange( e , r.rno , i ) } readOnly = { r.readOnly } />
+                        <input  value={ r.rcontent }  className="replyRcontent" onChange={ (e)=> onRcontentChange( e , r.rno , i) }  readOnly = { r.readOnly }   />
                         <div class="replyBtn">
                             <button onClick={ (e)=>onRereplyHandler( e , r.rno ) } >답글</button>
-                            {
-                                login != null && login.mno == r.mno
+                            {  login != null && login.mno == r.mno
                                 ?<>
-                                    <button onClick={ (e)=>onUpdateHandler( e , r.rno , i ) } >
-                                        { r.readOnly == true ? '수정' : '수정완료'}
-                                    </button>
-                                    <button onClick={ (e)=>onDeleteHandler( e , r.rno ) } >삭제</button>
-                                </>
+                                        <button onClick={ (e)=>onUpdateHandler( e , r.rno , i ) } >
+                                            { r.readOnly == true ? '수정' : '수정완료'}
+                                        </button>
+                                        <button onClick={ (e)=>onDeleteHandler( e , r.rno ) } >삭제</button>
+                                    </>
                                 :
                                 <></>
                             }
@@ -105,3 +103,6 @@ export default function ReplyList( props ) {
         }
     </>)
 }
+
+/* JSX 형식에서 함수에 매개변수 전달 */
+/*  <마크업 이벤트 = { (e)=>{ 함수명( e , 매개변수 ) } } /> */

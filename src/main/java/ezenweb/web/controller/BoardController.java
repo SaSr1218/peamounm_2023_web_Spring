@@ -110,7 +110,7 @@ public class BoardController {
 
     // 11. 댓글 수정 [ U ]
     @PutMapping("reply")
-    public boolean putReply(@RequestBody ReplyDto replyDto) {
+    public boolean putReply(@RequestBody ReplyDto replyDto) { log.info( "result 확인!!" + replyDto );
         boolean result = boardService.putReply( replyDto );
         return result;
     }

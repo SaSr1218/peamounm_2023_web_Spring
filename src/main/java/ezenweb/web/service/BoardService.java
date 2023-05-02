@@ -210,6 +210,7 @@ public class BoardService {
         return true;
     }
     // 11. 댓글 수정 [ U ]
+    @Transactional
     public boolean putReply(ReplyDto replyDto) {
         Optional< ReplyEntity > optionalReplyEntity = replyEntityRepository.findById( replyDto.getRno() );
         if (optionalReplyEntity.isPresent() ){
@@ -219,6 +220,7 @@ public class BoardService {
         return false;
     }
     // 12. 댓글 삭제 [ D ]
+    @Transactional
     public boolean deleteReply( int rno ) {
         Optional< ReplyEntity > optionalReplyEntity = replyEntityRepository.findById( rno );
 

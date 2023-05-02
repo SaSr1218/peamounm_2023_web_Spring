@@ -10,7 +10,7 @@ export default function ReplyInput( props ) {
     const replywirteHandler = (e) => {
         // view.js --> replylist.js --> replyinput 로부터 전달받은 메소드 실행
         props.onReplyWrite( rcontent , props.rindex );
-        setContent( ''); // 댓글 작성시 공백 초기화
+        setContent(''); // 댓글 작성시 공백 초기화
     }
     return (<div className="replyInputBox">
         <textarea
