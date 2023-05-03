@@ -3,54 +3,53 @@ import Container from '@mui/material/Container';
 
 export default function Chatting( props ){
 
-    let 숫자 = 10;                        // 지역변수 : 컴포넌트[함수] 호출마다 초기화
-    let 숫자2 = useRef(10);               // 재랜더링시 초기값이 적용되지 않는 함수 { 반환값 : 객체{ current : XXX }  }
-    let inputRef = useRef(null);         // document.querySelector vs useRef
+    let msgInput = useRef(null); // 채팅입력창[input] DOM 객체
+    let [ msgContent , setMsgContent ] = useState([]); // 현재 채팅중인 메시지를 저장하는 변수
 
-    const [ id , setId ] = useState(0);  // set메소드 사용시 컴포넌트 재호출[재랜더링]
+    // 1. 재랜더링 될때마다 새로운 접속
+    // let webSocket = useRef( new WebSocket("ws/localgost:8080/chat") );
 
-/*    // 1. 웹소켓 = webSocket = JS
-    let webSocket = useRef( null );
+    // 2. 재랜더링 될때 데이터 상태 유지
+    let webSocket = useRef( new WebSocket("ws://localhost:8080/chat") );
 
-    // 2. useEffect 사용
-    useEffect ( () => {
-        if ( !webSocket.current ){
-             webSocket.current = new webSocket('ws://localhost:8080/chat'); // 라우터 주소랑 겹치면 안됨!
-
-             // 1. 웹 소켓이 접속 성공 시에
-             webSocket.current.onopen = () => { console.log(webSocket); }
-        }
-
-    })*/
-
-    console.log( 숫자 )
-    console.log( 숫자2 )
-    console.log( id )
-
-    // 2. 난수 생성
-    let ranId = Math.floor( Math.random() * ( 999 -1 ) +1);
-        // Math.floor( Math.random()*(최대값 - 최소값) + 최소값); : 정수 1~1000
-    숫자 = ranId;
-    숫자2.current = ranId;
-
-    // setId( ranId );
+    // 3. 서버소켓에 접속했을때 이벤트
+    webSocket.current.onopen = () => { console.log("서버 접속했습니다.");}
+    // 3. 서버소켓에 접속 끊겼을때 이벤트
+    webSocket.current.onclose = (e) => { console.log("서버 나갔습니다.");}
+    // 3. 서버소켓과 오류 발생 이벤트
+    webSocket.current.onerror = (e) => { console.log("접속 에러입니다.");}
+    // 3. 서버소켓으로부터 메시지 받았을때 이벤트
+    webSocket.current.onmessage = (e) => {
+        console.log("서버소켓으로부터 메시지 전달받았습니다."); console.log(e); console.log(e.data);
+        // msgContent.push(e.data);            // 배열에 내용 추가 ( 1번 방법 )
+        // setMsgContent( [...msgContent] );   // 재랜더링        ( 1번 방법 )
+        setMsgContent ( [...msgContent , e.data ] ); // 재랜더링 ( 2번 방법 )
+    }
 
     const onSend = () => {
-        console.log( inputRef.current.value );
-        console.log( document.querySelector('.msgInput').value );
-        inputRef.current.value = 123;
+        let msg = msgInput.current.value; // msgInput 변수가 참조중인 <input ref={ msgInput } /> 해당 input 를 DOM 객체로 호출
+        webSocket.current.send( msg ); // 클라이언트가 서버에게 메시지 전송 [ .send( ) ]
+        msgInput.current.value = '';
     }
 
     return( <>
         <Container>
             <h6> 익명 채팅방 </h6>
             <div className="chatContentBox">
-
+            {
+                msgContent.map( (m) => {
+                    return (<>
+                                <div>
+                                    { m }
+                                </div>
+                            </>)
+                })
+            }
             </div>
             <div className="chatInputBox">
-                <span> 익명 94 </span>
-                <input ref={ inputRef } type="text" className="msgInput" />
-                <button onClick = { onSend }> 전송 </button>
+                <span> 익명94 </span>
+                <input ref={ msgInput } type="text" />
+                <button onClick = { onSend } > 전송 </button>
             </div>
         </Container>
     </>)
