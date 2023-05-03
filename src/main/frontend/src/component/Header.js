@@ -53,6 +53,7 @@ export default function Header(props){
             <a href="/board/list/"> 게시판 </a>
             <a href="/admin/dashboard"> 관리자 </a>
             {/* AppTodo 연결하기! */}
+            <a href="/chatting/home"> 익명채팅방 </a>
 
             <div className = "etcDiv"></div>
             { login == null ?

@@ -8,6 +8,7 @@ import List from "./board/List"
 import Write from "./board/Write"
 import View from "./board/View"
 import Update from "./board/Update"
+import Chatting from "./board/Chatting"
 
 import DashBoard from "./admin/DashBoard"
 
@@ -44,7 +45,10 @@ export default function Index( props ){
                 <Route path="/board/view/:bno" element = { <View/> } />
                 <Route path="/board/update" element = { <Update/> } />
 
+                <Route path="/chatting/home" element = { <Chatting /> } />
+
                 <Route path="/admin/dashboard" element= { <DashBoard/> } />
+
 
             </Routes>
 

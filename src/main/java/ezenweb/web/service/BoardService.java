@@ -226,6 +226,9 @@ public class BoardService {
 
         if ( optionalReplyEntity.isPresent() ){
             replyEntityRepository.delete( optionalReplyEntity.get() );
+
+            // 상위댓글 삭제 시 하위댓글도 같이 삭제 해야함!
+
             return true;
         }
         return false;

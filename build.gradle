@@ -28,14 +28,15 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-web'       // 스프링 부트
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'  // 스프링 부트 테스터
-    compileOnly 'org.projectlombok:lombok'                                  // 롬복
-    annotationProcessor 'org.projectlombok:lombok'                          // 롬복
-    runtimeOnly 'com.mysql:mysql-connector-j'                               // MySQL
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'  // JPA
-    implementation 'org.springframework.boot:spring-boot-starter-security'  // 스프링 시큐리티
-    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client' // oauth2 설정값
+    implementation 'org.springframework.boot:spring-boot-starter-web'            // 스프링 부트
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'       // 스프링 부트 테스터
+    compileOnly 'org.projectlombok:lombok'                                       // 롬복
+    annotationProcessor 'org.projectlombok:lombok'                               // 롬복
+    runtimeOnly 'com.mysql:mysql-connector-j'                                    // MySQL
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'       // JPA
+    implementation 'org.springframework.boot:spring-boot-starter-security'       // 스프링 시큐리티
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'  // oauth2 설정값
+    implementation 'org.springframework.boot:spring-boot-starter-websocket'      // websocket
 
 }
 
