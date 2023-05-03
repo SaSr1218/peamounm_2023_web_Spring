@@ -17,7 +17,6 @@ public class ChattingHandler extends TextWebSocketHandler {
     // 0. * 서버소켓에 접속한 세션 명단 저장 *
     private static List<WebSocketSession> webSocketSessions = new ArrayList<>();
 
-
     @Override // 1. 클라이언트가 서버소켓 접속했을 떄
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
         log.info("afterConnectionEstablished" + session);
@@ -40,7 +39,6 @@ public class ChattingHandler extends TextWebSocketHandler {
         log.info("afterConnectionClosed" + status);
         webSocketSessions.remove(session); // 클라이언트 세션이 들어오면 리스트에서 제거
     }
-
 
 
 }
