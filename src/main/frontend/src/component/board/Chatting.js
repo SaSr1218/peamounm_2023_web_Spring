@@ -43,30 +43,28 @@ export default function Chatting( props ){
         }
     }) ;
 
-
-
-
-    // 4. 메시지 전송
-    const onSend = () => {
-        // let msg = msgInput.current.value; // msgInput 변수가 참조중인 <input ref={ msgInput } /> 해당 input 를 DOM 객체로 호출
+    // 4.메시지 전송
+    const onSend = () =>{ // msgInput변수가 참조중인 <input ref={ msgInput } > 해당 input 를 DOM객체로 호출
         // 1. 메시지 전송
-        let msgBox = {
-            id : id , // 보낸 사람
-            msg : msgInput.current.value , // 보낸 내용
-            time : new Date().toLocaleTimeString(),  // 현재 시간만
-            type : 'msg'
+        let msgBox ={ id : id,  msg : msgInput.current.value,  time : new Date().toLocaleTimeString(), type : 'msg'  }
+        if( msgBox.msg != ''){ // 내용이 있으면 메시지 전송
+                ws.current.send( JSON.stringify( msgBox ) ); // 클라이언트가 서버에게 메시지 전송 [ .send( ) ]
+                msgInput.current.value = '';
         }
-        if ( msgBox.msg != ''){ // 내용이 있으면 메시지 전달
-            ws.current.send( JSON.stringify( msgBox ) ); // 클라이언트가 서버에게 메시지 전송 [ .send( ) ]
-            msgInput.current.value = '';
-        }
-
         // 2. 첨부파일 전송 [ axios 이용한 서버에게 첨부파일 업로드 ]
-        if ( fileInput.current.value != '' ){ // 첨부파일 존재하면
-            axios.post("/chat/fileupload" , new FormData ( fileForm.current ) )
-                .then( r => { console.log( r.data ) } );
+        if( fileInput.current.value != '' ){ // 첨부파일 존재하면
+            axios.post( "/chat/fileupload" ,  new FormData( fileForm.current ) )
+                    .then( r => {
+                        console.log( r.data)
+                        // 다른 소켓들에게 업로드 결과 전달
+                        let msgBox ={ id : id, msg : msgInput.current.value,
+                            time : new Date().toLocaleTimeString(), type : 'file'  ,
+                            fileInfo : r.data // 업로드 후 응답받은 파일정보
+                        }
+                        ws.current.send( JSON.stringify( msgBox ) );
+                        fileInput.current.value = '';
+                    } );
         }
-
     }
 
     // 5. 메시지 받을 때마다 스크롤 가장 하단으로 내리기
@@ -76,31 +74,38 @@ export default function Chatting( props ){
 
     return( <>
         <Container>
-            <h6> 익명 채팅방 </h6>
-            <div className="chatContentBox">
-            {
-                msgContent.map( (m) => {
-                    return (<>
-                        {/* 조건 스타일링 : style={ 조건 ? { true } , { false } */}
-                        <div className="chatContent" style={ m.id == id ? { backgroundColor : '#fbceb1'} : { } } >
-                            <span> {m.id} </span>
-                            <span> {m.time} </span>
-                            <span> {m.msg} </span>
+           <div className="chatContentBox">
+           {
+                msgContent.map( (m)=>{
+                    return(<>
+                       {/* 조건 스타일링 : style={ 조건 ? {참일경우} , {거짓일경우} }  */}
+                        <div className="chatContent" style={ m.id == id ? { backgroundColor: '#d46e6e' } : { } }  >
+                            <span> { m.id } </span>
+                            <span> { m.time } </span>
+                            {
+                                m.type == 'msg' ? <span> { m.msg } </span>
+                                : (<>
+                                    <span>
+                                        <span> { m.fileInfo.originalFilename } </span>
+                                        <span> { m.fileInfo.sizeKb } </span>
+                                        <span> <a href={"/chat/filedownload?uuidFile=" + m.fileInfo.uuidFile + "&originalFilename="+ m.fileInfo.originalFilename } > 저장 </a> </span>
+                                    </span>
+                                </>)
+                            }
+
                         </div>
                     </>)
                 })
-            }
-            </div>
+           }
+           </div>
             <div className="chatInputBox">
                 <span> { id }  </span>
                 <input className="msgInput" ref={ msgInput } type="text" />
                 <button onClick = { onSend } > 전송 </button>
 
-                <div>
-                    <form ref={ fileForm}>
-                        <input ref={ fileInput } type="file" name="attachFile" />
-                    </form>
-                </div>
+                <form ref={ fileForm}>
+                    <input ref={ fileInput } type="file" name="attachFile" />
+                </form>
 
             </div>
         </Container>
