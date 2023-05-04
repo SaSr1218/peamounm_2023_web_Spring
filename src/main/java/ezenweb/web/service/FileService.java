@@ -33,6 +33,8 @@ public class FileService {
 
             // * 만약에 다른 이미지인데 파일이 동일하면 식별이 불가하다!
             String fileName = UUID.randomUUID().toString()+"_"+multipartFile.getOriginalFilename();
+            // "_" 가 있는 파일에서는 오류가 뜨기에 "_"를 "-"로 치환해주기
+            // String fileName = UUID.randomUUID().toString()+"_"+multipartFile.getOriginalFilename().replaceAll("_","-");
 
             // 2. 경로 + UUID 파일명 조합해서 file 클래스 생성
             File file = new File( path+fileName);

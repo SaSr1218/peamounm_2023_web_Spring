@@ -53,7 +53,20 @@ export default function Chatting( props ){
         }
         // 2. 첨부파일 전송 [ axios 이용한 서버에게 첨부파일 업로드 ]
         if( fileInput.current.value != '' ){ // 첨부파일 존재하면
-            axios.post( "/chat/fileupload" ,  new FormData( fileForm.current ) )
+            let formData = new FormData ( fileForm.current )
+            fileAxios( formData )
+
+        }
+    }
+
+    // 5. 메시지 받을 때마다 스크롤 가장 하단으로 내리기
+    useEffect ( () => {
+        document.querySelector('.chatContentBox').scrollTop = document.querySelector('.chatContentBox').scrollHeight
+    } , [msgContent])
+
+    // 6. 파일 전송 axios
+    const fileAxios = (formData)=>{
+            axios.post( "/chat/fileupload" ,  formData )
                     .then( r => {
                         console.log( r.data)
                         // 다른 소켓들에게 업로드 결과 전달
@@ -64,17 +77,42 @@ export default function Chatting( props ){
                         ws.current.send( JSON.stringify( msgBox ) );
                         fileInput.current.value = '';
                     } );
-        }
     }
-
-    // 5. 메시지 받을 때마다 스크롤 가장 하단으로 내리기
-    useEffect ( () => {
-        document.querySelector('.chatContentBox').scrollTop = document.querySelector('.chatContentBox').scrollHeight
-    } , [msgContent])
 
     return( <>
         <Container>
-           <div className="chatContentBox">
+           <div
+                className="chatContentBox"
+                onDragEnter = { (e) => { console.log('onDragEnter');
+                    e.preventDefault(); {/* 상위 이벤트 제거 : 브라우저내 동일한 이벤트 제거 */}
+                } }
+                onDragOver = { (e) => { console.log('onDragOver');
+                    e.preventDefault(); {/* 상위 이벤트 제거 */}
+                    e.target.style.backgroundColor = '#e8e8e8'
+                } }
+                onDragLeave = { (e) => { console.log('onDragLeave');
+                    e.preventDefault(); {/* 상위 이벤트 제거 */}
+                    e.target.style.backgroundColor = '#ffffff'
+                } }
+                onDrop = { (e) => { console.log('onDrop');
+                    e.preventDefault(); {/* 상위 이벤트 제거 */}
+
+                    {/* 드랍된 파일들 호출 = e.dataTransfer.files; */}
+                    let files = e.dataTransfer.files;
+                    for ( let i = 0 ; i < files.length; i++ ){
+                        {/* 파일이 존재하면  */}
+                        if ( files[i] != null && files[i] != undefined ){
+
+                            let formData = new FormData ( fileForm.current )
+
+                            { /* 드래그된 파일을 폼데이터에 추가 */}
+                            formData.set('attachFile' , files[i])
+                            fileAxios( formData )
+                        }
+                    }
+
+                } }
+           >
            {
                 msgContent.map( (m)=>{
                     return(<>
