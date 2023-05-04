@@ -1,4 +1,5 @@
 import React , { useEffect , useState , useRef } from 'react';
+import axios from 'axios'
 import Container from '@mui/material/Container';
 import styles from '../../css/board/chatting.css';
 
@@ -6,8 +7,10 @@ export default function Chatting( props ){
 
     let [ id , setId ] = useState('');   // 익명채팅방에서 사용할 id [ 난수 저장 ]
     let [ msgContent , setMsgContent ] = useState([]); // 현재 채팅중인 메시지를 저장하는 변수
-    let msgInput = useRef(null);        // 채팅입력창[input] DOM 객체
+    let msgInput = useRef(null);        // 채팅입력창[input] DOM 객체 제어 변수
 
+    let fileForm = useRef(null);        // 채팅입력창[input] DOM 객체 제어 변수
+    let fileInput = useRef(null);       // 채팅입력창[input] DOM 객체 제어 변수
 
     // 1. 재랜더링 될때마다 새로운 접속
     // let webSocket = useRef( new WebSocket("ws/localgost:8080/chat") );
@@ -46,13 +49,24 @@ export default function Chatting( props ){
     // 4. 메시지 전송
     const onSend = () => {
         // let msg = msgInput.current.value; // msgInput 변수가 참조중인 <input ref={ msgInput } /> 해당 input 를 DOM 객체로 호출
+        // 1. 메시지 전송
         let msgBox = {
             id : id , // 보낸 사람
             msg : msgInput.current.value , // 보낸 내용
-            time : new Date().toLocaleTimeString()  // 현재 시간만
+            time : new Date().toLocaleTimeString(),  // 현재 시간만
+            type : 'msg'
         }
-        ws.current.send( JSON.stringify( msgBox ) ); // 클라이언트가 서버에게 메시지 전송 [ .send( ) ]
-        msgInput.current.value = '';
+        if ( msgBox.msg != ''){ // 내용이 있으면 메시지 전달
+            ws.current.send( JSON.stringify( msgBox ) ); // 클라이언트가 서버에게 메시지 전송 [ .send( ) ]
+            msgInput.current.value = '';
+        }
+
+        // 2. 첨부파일 전송 [ axios 이용한 서버에게 첨부파일 업로드 ]
+        if ( fileInput.current.value != '' ){ // 첨부파일 존재하면
+            axios.post("/chat/fileupload" , new FormData ( fileForm.current ) )
+                .then( r => { console.log( r.data ) } );
+        }
+
     }
 
     // 5. 메시지 받을 때마다 스크롤 가장 하단으로 내리기
@@ -81,6 +95,13 @@ export default function Chatting( props ){
                 <span> { id }  </span>
                 <input className="msgInput" ref={ msgInput } type="text" />
                 <button onClick = { onSend } > 전송 </button>
+
+                <div>
+                    <form ref={ fileForm}>
+                        <input ref={ fileInput } type="file" name="attachFile" />
+                    </form>
+                </div>
+
             </div>
         </Container>
     </>)
