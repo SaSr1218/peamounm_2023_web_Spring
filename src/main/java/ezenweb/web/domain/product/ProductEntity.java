@@ -3,11 +3,12 @@ package ezenweb.web.domain.product;
 import ezenweb.web.domain.BaseTime;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -28,6 +29,11 @@ public class ProductEntity extends BaseTime {
     @ColumnDefault("0")@Column( nullable = false) private byte pstate; // 제품상태 [ 0 : 판매중 , 1 : 판매중지 , 2 : 재고없음 ]
     @ColumnDefault("0")@Column( nullable = false) private int pstock; // 제품 재고/수량
     // 제품이미지 [ 1 : 다 ] 연관관계 [* 추후 ]
+    @OneToMany(mappedBy = "productEntity" , cascade = CascadeType.ALL) // pk 필드 선언시
+    //  vs @OnDelete(action = OnDeleteAction.CASCADE)
+    @ToString.Exclude @Builder.Default
+    private List<ProductImgEntity> productImgEntityList = new ArrayList<>();
+
     // 구매내역 [ 1 : 다 ] 연관관계 [ *추후 ]
 
     // 1. 출력용 [ 관리자보는 입장 - 관리자 페이지에서 출력용  ]

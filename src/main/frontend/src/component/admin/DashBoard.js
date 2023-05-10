@@ -1,6 +1,8 @@
 import React,{ useState , useEffect } from 'react';
 import axios from 'axios';
 import ProductTable from './ProductTable';
+import ProductWrite from './ProductWrite';
+
 import Container from '@mui/material/Container';
 
 // tabs nui
@@ -49,7 +51,7 @@ export default function DashBoard( props ) {
                 </TabPanel>
 
                 <TabPanel value="2">
-                    제품 등록 구역
+                    <ProductWrite />
                 </TabPanel>
 
                 <TabPanel value="3">

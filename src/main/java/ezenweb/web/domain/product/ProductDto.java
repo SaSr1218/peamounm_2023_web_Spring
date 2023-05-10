@@ -1,6 +1,9 @@
 package ezenweb.web.domain.product;
 
 import lombok.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @Getter @Setter  @ToString @AllArgsConstructor  @NoArgsConstructor  @Builder
 public class ProductDto {
@@ -12,9 +15,14 @@ public class ProductDto {
     private String pmanufacturer;
     private byte pstate;
     private int pstock;
+
     // 관리자용
     private String cdate;
     private String udate;
+
+    // 첨부파일 입력용
+    // private MultipartFile multipartFile; 1개용!
+    private List<MultipartFile> pimgs ; // 여러 개 첨부파일 받기
 
     // 1. 저장용 [ 관리자 페이지 ]
     public ProductEntity toSaveEntity(){
