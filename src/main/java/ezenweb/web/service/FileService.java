@@ -19,7 +19,7 @@ import java.util.UUID;
 public class FileService {
 
     // * 첨부파일 저장 할 경로 [ 1. 배포 전 vs 2. 배포 후 ]
-    String path = "C:\\java\\";
+    public String path = "C:\\java\\";
 
     public FileDto fileupload( MultipartFile multipartFile ){
         log.info("File upload : " + multipartFile);

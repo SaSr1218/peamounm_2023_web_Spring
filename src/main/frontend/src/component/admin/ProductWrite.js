@@ -10,7 +10,10 @@ export default function ProductWrite( props ){
         const writeFormData = new FormData( writeForm.current );
         axios.post( '/product' , writeFormData )
             .then( r => {
-                if ( r.data == true ){ alert('등록성공')}
+                if ( r.data == true ){
+                    alert('등록성공')
+                    props.handleTabsChange( null , '3' )
+                }
                 else { alert('등록실패')}
             })
     }
