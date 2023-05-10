@@ -57,10 +57,10 @@ public class ProductService {       /* 주요기능과 DB처리 요청 역찰[ T
                 // DB 저장
                 ProductImgEntity productImgEntity = productImgRepository.save(
                         ProductImgEntity.builder()
-                        .oridinalFilename( fileDto.getOriginalFilename() )
-                        .uuidFile( fileDto.getUuidFile() )
-                        .build()
-                        );
+                                .oridinalFilename( fileDto.getOriginalFilename() )
+                                .uuidFile( fileDto.getUuidFile() )
+                                .build()
+                );
                 // 단방향 : 이미지객체에 제품객체 등록
                 productImgEntity.setProductEntity( productEntity );
                 // 양방향 : 제품객체에 이미지객체를 등록
@@ -72,7 +72,8 @@ public class ProductService {       /* 주요기능과 DB처리 요청 역찰[ T
 
     }
     // 3. 제품 수정
-    @Transactional      public boolean put(ProductDto productDto){ log.info("put : " + productDto);
+    @Transactional
+    public boolean put(ProductDto productDto){ log.info("put : " + productDto);
         // 1. 업데이트 할 엔티티 찾기
         Optional<ProductEntity> entityOptional  = productEntityRepository.findById( productDto.getId() );
         // 2. 해당 엔티티가 존재하면 각 필드별 set 이용한 수정 처리
@@ -90,7 +91,8 @@ public class ProductService {       /* 주요기능과 DB처리 요청 역찰[ T
         return false;
     }
     // 4. 제품 삭제
-    @Transactional      public boolean delete( String id ){ log.info("delete : " + id);
+    @Transactional
+    public boolean delete( String id ){ log.info("delete : " + id);
         // 1. 삭제 할 엔티티 찾기
         Optional<ProductEntity> entityOptional  = productEntityRepository.findById( id );
         // 2. 해당 엔티티가 존재하면
