@@ -43,9 +43,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .authorizeHttpRequests() // 1.인증[권한]에 따른 http 요청 제한
                     .antMatchers("/admin/**").hasRole("ADMIN")
                     .antMatchers("/board/update").hasRole("USER")
-                    .antMatchers("/board/delete").hasRole("USER or ADMIN") // user or admin 둘 다 삭제 가능!
+                    .antMatchers("/board/delete").hasAnyRole("USER" , "ADMIN") // user or admin 둘 다 삭제 가능!
                     .antMatchers("/board/write").hasRole("USER")
-                    .antMatchers("/**").permitAll()
+                    .antMatchers("/**").permitAll() // 권한제한 X [ 마지막에 정의해야함! ]
                 .and()
                     .formLogin()
                         .loginPage("/member/login")               // 로그인페이지로 사용할 URL
