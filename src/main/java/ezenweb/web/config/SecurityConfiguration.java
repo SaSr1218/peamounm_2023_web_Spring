@@ -39,30 +39,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override // 재정의 [ 코드 바꾸기 ]
     protected void configure(HttpSecurity http) throws Exception{
         //super.configure(http); // super : 부모 클래스 호출
-        http/*
-                // 권한에 따른 HTTP GET 요청 제한
-                .authorizeHttpRequests() // HTTP 인증 요청
-                    .antMatchers("/member/info/mypage") // 인증시에만 사용할 URL
-                        .hasRole("user") // 위 URL 패턴에 요청할 수 있는 권한명
-                    .antMatchers("/admin/**")// ~~ 이하 페이지는 admin만 가능
-                        .hasRole("admin")
-                    //.antMatchers("/board/write") // 게시판 쓰기는 회원만 가능
-                    //    .hasRole("user")
-                .antMatchers("/**") // localhost:8080 ~ 이하 페이지는 권한 해제
-                    .permitAll() // 권한 해제
-                        // 토큰 ( ROLE_user ) : ROLE_ 제외한 권한명 작성
-                
+        http
+                .authorizeHttpRequests() // 1.인증[권한]에 따른 http 요청 제한
+                    .antMatchers("/admin/**").hasRole("ADMIN")
+                    .antMatchers("/board/update").hasRole("USER")
+                    .antMatchers("/board/delete").hasRole("USER or ADMIN") // user or admin 둘 다 삭제 가능!
+                    .antMatchers("/board/write").hasRole("USER")
+                    .antMatchers("/**").permitAll()
                 .and()
-                    .csrf() // 사이트 간 요청 위조 [ post,put http 사용 불가 ]
-                    // .disable() // 모든 http csrf 해제
-                        .ignoringAntMatchers("/member/info") // 특정 매핑URL csrf 무시
-                        .ignoringAntMatchers("/member/login")
-                        .ignoringAntMatchers("/member/find") // 아이디 찾기, 비밀번호 찾기 열기
-                        .ignoringAntMatchers("/board/category/write")
-                        .ignoringAntMatchers("/board/write")
-                        .ignoringAntMatchers("/board/click")
-                        .ignoringAntMatchers("/todo")
-                .and()*/ // 기능 추가할 때 사용되는 메소드
                     .formLogin()
                         .loginPage("/member/login")               // 로그인페이지로 사용할 URL
                         .loginProcessingUrl("/member/login")      // 로그인 처리할 매핑 URL
@@ -107,3 +91,28 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 
 } // SecurityConfiguration class end
+
+                /*
+                // 권한에 따른 HTTP GET 요청 제한
+                .authorizeHttpRequests() // HTTP 인증 요청
+                    .antMatchers("/member/info/mypage") // 인증시에만 사용할 URL
+                        .hasRole("user") // 위 URL 패턴에 요청할 수 있는 권한명
+                    .antMatchers("/admin/**")// ~~ 이하 페이지는 admin만 가능
+                        .hasRole("admin")
+                    //.antMatchers("/board/write") // 게시판 쓰기는 회원만 가능
+                    //    .hasRole("user")
+                .antMatchers("/**") // localhost:8080 ~ 이하 페이지는 권한 해제
+                    .permitAll() // 권한 해제
+                        // 토큰 ( ROLE_user ) : ROLE_ 제외한 권한명 작성
+
+                .and()
+                    .csrf() // 사이트 간 요청 위조 [ post,put http 사용 불가 ]
+                    // .disable() // 모든 http csrf 해제
+                        .ignoringAntMatchers("/member/info") // 특정 매핑URL csrf 무시
+                        .ignoringAntMatchers("/member/login")
+                        .ignoringAntMatchers("/member/find") // 아이디 찾기, 비밀번호 찾기 열기
+                        .ignoringAntMatchers("/board/category/write")
+                        .ignoringAntMatchers("/board/write")
+                        .ignoringAntMatchers("/board/click")
+                        .ignoringAntMatchers("/todo")
+                .and()*/ // 기능 추가할 때 사용되는 메소드

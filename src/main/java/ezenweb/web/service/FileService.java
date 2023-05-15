@@ -21,7 +21,8 @@ public class FileService {
     // * 첨부파일 저장 할 경로 [ 1. 배포 전 vs 2. 배포 후 ]
     //public String path = "C:\\java\\"; // spring 서버 로컬드라이브[c] 접근 가능
     // JS[react] 로컬드라이브[c] 접근 불가능 --> 리액트서버에 업로드해야함!
-    // springboot + react 통합 C:\Users\cntjr\Desktop\peamounm_2023_web_Spring\src\main\frontend\build\static\media
+    // springboot + react 통합 C:\Users\cntjr\Desktop\peamounm_2023_web_Spring\build\resources\main\static\static\media\
+    // (1) 로컬 배포
     public String path  = "C:\\Users\\cntjr\\Desktop\\peamounm_2023_web_Spring\\build\\resources\\main\\static\\static\\media\\";
 
     public FileDto fileupload( MultipartFile multipartFile ){

@@ -76,7 +76,7 @@ public class MemberService implements UserDetailsService , OAuth2UserService<OAu
         memberDto.setMemail(email);
         memberDto.setMname(name);
             Set<GrantedAuthority> 권한목록 = new HashSet<>();
-            SimpleGrantedAuthority 권한 = new SimpleGrantedAuthority("ROLE_user");
+            SimpleGrantedAuthority 권한 = new SimpleGrantedAuthority("ROLE_USER");
             권한목록.add(권한);
         memberDto.set권한목록(권한목록);
 
@@ -84,7 +84,7 @@ public class MemberService implements UserDetailsService , OAuth2UserService<OAu
         Optional<MemberEntity> entity =  memberEntityRepository.findByMemail( email );
         if ( !entity.isPresent() ) { // 첫 방문               entity == null  -> optional이 아닐 경우!!
             // DB 처리 [ 첫 방문시에만 db 등록 , 두번째 방문부터는 db 수정 ]
-            memberDto.setMrole("oauthuser"); // DB에 저장할 권한명
+            memberDto.setMrole("USER"); // DB에 저장할 권한명 원래 : oauthuser
             memberEntityRepository.save( memberDto.toEntity() );
         }else{ // 두번째 방문 이상 수정 처리
             entity.get().setMname( name );
